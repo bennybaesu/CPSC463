@@ -7,6 +7,7 @@
 #           (Add Group Member Name)
 
 import menu
+import capabilities
 
 # Capability 1: Screen that shows all rooms and their current status.
 # Capability 2: Screen showing a list of the rooms and who is staying in the room for each day for the next 7 days.
@@ -20,3 +21,4 @@ import menu
 print('Welcome to Hotel Management System\n')
 
 menuChoice = menu.printMenu()
+
