@@ -7,7 +7,8 @@ def printMenu():
             '(5) - Guest Profile',
             '(6) - Guest Stay Information',
             '(7) - Search Guests',
-            '(8) - Daily Report']
+            '(8) - Daily Report',
+            '(0) - QUIT']
 
     print("MENU:")
     for m in menu:
@@ -15,7 +16,7 @@ def printMenu():
 
     while True:
         x = int(input("Enter your menu choice: "))
-        if 1 <= x <= 8:
+        if 0 <= x <= 8:
             break
         else:
             print('That is an invalid menu option. Try again.\n')

@@ -20,5 +20,36 @@ import capabilities
 
 print('Welcome to Hotel Management System\n')
 
-menuChoice = menu.printMenu()
+
+while True:
+    menuChoice = menu.printMenu()
+    if menuChoice == 1:
+        capabilities.cap1()
+
+    elif menuChoice == 2:
+        capabilities.cap2()
+
+    elif menuChoice == 3:
+        capabilities.cap3()
+
+    elif menuChoice == 4:
+        capabilities.cap4()
+
+    elif menuChoice == 5:
+        capabilities.cap5()
+
+    elif menuChoice == 6:
+        capabilities.cap6()
+
+    elif menuChoice == 7:
+        capabilities.cap7()
+
+    elif menuChoice == 8:
+        capabilities.cap8()
+
+    elif menuChoice == 0:
+        break
+
+
+
 

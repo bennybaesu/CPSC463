@@ -1,5 +1,10 @@
 import guest
 import room
+import reservation
+from PIL import Image
+import sample
+
+reservation.Reservation
 
 
 def cap1():
@@ -30,6 +35,7 @@ def cap5():
 def cap6():
     print(" ")
     # Capability 6 can go here
+
 
 
 def cap7():
