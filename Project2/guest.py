@@ -13,7 +13,7 @@ class Guest:
         self.email = ' '
         self.ID = [' ', ' ']
         self.licensePlate = ' '
-        self.IdPhoto = ' ' # TODO: Set the ID Photo (Benny)
+        self.IdPhoto = 'idImage.gif'
 
     def setFirstName(self, fn):
         self.firstName = fn

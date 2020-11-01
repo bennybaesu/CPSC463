@@ -21,10 +21,10 @@ def getSampleData():
     sampleGuest[2].setLastName('Lopez')
     sampleGuest[3].setLastName('Simmons')
 
-    sampleGuest[0].phoneNumber(9511234567)
-    sampleGuest[1].phoneNumber(9091430413)
-    sampleGuest[2].phoneNumber(7148439514)
-    sampleGuest[3].phoneNumber(7140001434)
+    sampleGuest[0].setPhoneNumber(9511234567)
+    sampleGuest[1].setPhoneNumber(9091430413)
+    sampleGuest[2].setPhoneNumber(7148439514)
+    sampleGuest[3].setPhoneNumber(7140001434)
 
     sampleGuest[0].setAddress('1234 Cario Ct')
     sampleGuest[1].setAddress('411 Fullerton Blvd')
@@ -51,20 +51,15 @@ def getSampleData():
     sampleGuest[2].setEmail('jlopez@hotmail.com')
     sampleGuest[3].setEmail('joesimmons@gmail.com')
 
-    sampleGuest[0].setID('DL52548')
-    sampleGuest[1].setID('QK10475')
-    sampleGuest[2].setID('AA74143')
-    sampleGuest[3].setID('XL59532')
+    sampleGuest[0].setID('MA', 'DL52548')
+    sampleGuest[1].setID('CA', 'QK10475')
+    sampleGuest[2].setID('MD', 'AA74143')
+    sampleGuest[3].setID('NE', 'XL59532')
 
     sampleGuest[0].setLicensePlate('8ABC523')
     sampleGuest[1].setLicensePlate('7JFS243')
     sampleGuest[2].setLicensePlate('8BOP997')
     sampleGuest[3].setLicensePlate('143G924')
-
-    sampleGuest[0].setIdPhoto(Image.open('id-card.jpg'))
-    sampleGuest[1].setIdPhoto(Image.open('id-card.jpg'))
-    sampleGuest[2].setIdPhoto(Image.open('id-card.jpg'))
-    sampleGuest[3].setIdPhoto(Image.open('id-card.jpg'))
 
     # Filling out room information
     sampleRoom[0].setRoomNumber(123)
