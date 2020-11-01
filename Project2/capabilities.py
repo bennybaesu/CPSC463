@@ -157,10 +157,10 @@ def cap6(reservation):
     b[3] = Button(text='Check Out (yyyy-mm-dd)', font=boldFont)
     b[3].grid(row=0, column=2)
 
-    b[5] = Button(text='Room Type', font=boldFont)
+    b[5] = Button(text='Room Number', font=boldFont)
     b[5].grid(row=0, column=3)
 
-    b[6] = Button(text='Room Number', font=boldFont)
+    b[6] = Button(text='Room Type', font=boldFont)
     b[6].grid(row=0, column=4)
 
     b[7] = Button(text='Room Rate', font=boldFont)
