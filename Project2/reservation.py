@@ -6,8 +6,8 @@ import datetime
 class Reservation:
     def __init__(self):
         self.guest = ' '
-        self.checkIn = datetime.datetime(2000, 1, 1)
-        self.checkOut = datetime.datetime(2000, 1, 2)
+        self.checkIn = datetime.datetime(2000, 1, 1, 15, 00)
+        self.checkOut = datetime.datetime(2000, 1, 2, 11, 00)
         self.room = ' '
         self.totalCharge = 0.00
         self.paymentsMade = 0.00

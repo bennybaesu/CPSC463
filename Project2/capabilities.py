@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import font as tkFont
+import datetime
 
 import sample
 
@@ -36,7 +37,7 @@ def cap4():
     # Capability 4 can go here
 
 
-def cap5():
+def cap5(guest):
     tk = Tk()
 
     # Font of bold Text
@@ -44,13 +45,11 @@ def cap5():
 
     # Title & Geometry Creation
     tk.title('Guest Profile')
-    tk.geometry("1400x400+400+250")
+    tk.geometry("1300x100+400+250")
 
     b = []
 
-    # Initialize b:
-    size_of_b = 12 + (len(guestList) * 12)
-    for i in range(size_of_b):
+    for i in range(25):
         b.append(Button(text=' '))
 
     # Print Column Titles:
@@ -85,73 +84,134 @@ def cap5():
     b[9].grid(row=0, column=9)
 
     b[11] = Button(text='License Plate Number', font=boldFont)
-    b[11].grid(row=0, column=9)
+    b[11].grid(row=0, column=10)
 
     b[12] = Button(text='ID Photo', font=boldFont)
-    b[12].grid(row=0, column=10)
+    b[12].grid(row=0, column=11)
 
     # Print the guest information
-    count = 12
-    rowCount = 1
-    for g in guestList:
-        b[count] = Button(text=g.getFirstName())
-        b[count].grid(row=rowCount, column=0)
-        count = count + 1
 
-        b[count] = Button(text=g.getLastName())
-        b[count].grid(row=rowCount, column=1)
-        count = count + 1
+    b[13] = Button(text=guest.getFirstName())
+    b[13].grid(row=1, column=0)
 
-        b[count] = Button(text=str(g.getPhoneNumber()))
-        b[count].grid(row=rowCount, column=2)
-        count = count + 1
+    b[14] = Button(text=guest.getLastName())
+    b[14].grid(row=1, column=1)
 
-        b[count] = Button(text=g.getAddress())
-        b[count].grid(row=rowCount, column=3)
-        count = count + 1
+    b[15] = Button(text=str(guest.getPhoneNumber()))
+    b[15].grid(row=1, column=2)
 
-        b[count] = Button(text=g.getCity())
-        b[count].grid(row=rowCount, column=4)
-        count = count + 1
+    b[16] = Button(text=guest.getAddress())
+    b[16].grid(row=1, column=3)
 
-        b[count] = Button(text=g.getState())
-        b[count].grid(row=rowCount, column=5)
-        count = count + 1
+    b[17] = Button(text=guest.getCity())
+    b[17].grid(row=1, column=4)
 
-        b[count] = Button(text=str(g.getZip()))
-        b[count].grid(row=rowCount, column=6)
-        count = count + 1
+    b[18] = Button(text=guest.getState())
+    b[18].grid(row=1, column=5)
 
-        b[count] = Button(text=g.getEmail())
-        b[count].grid(row=rowCount, column=7)
-        count = count + 1
+    b[19] = Button(text=str(guest.getZip()))
+    b[19].grid(row=1, column=6)
 
-        temp = g.getID()
+    b[20] = Button(text=guest.getEmail())
+    b[20].grid(row=1, column=7)
 
-        b[count] = Button(text=temp[0])
-        b[count].grid(row=rowCount, column=8)
-        count = count + 1
+    temp = guest.getID()
 
-        b[count] = Button(text=temp[1])
-        b[count].grid(row=rowCount, column=9)
-        count = count + 1
+    b[21] = Button(text=temp[0])
+    b[21].grid(row=1, column=8)
 
-        b[count] = Button(text=g.getLicensePlate())
-        b[count].grid(row=rowCount, column=9)
-        count = count + 1
+    b[22] = Button(text=temp[1])
+    b[22].grid(row=1, column=9)
 
-        b[count] = Button(text='Click to view ID', command=lambda: viewIdPhoto(g.getIdPhoto()))
-        b[count].grid(row=rowCount, column=10)
-        count = count + 1
+    b[23] = Button(text=guest.getLicensePlate())
+    b[23].grid(row=1, column=10)
 
-        rowCount = rowCount + 1
+    b[24] = Button(text='Click to view ID', command=lambda: viewIdPhoto(guest.getIdPhoto()))
+    b[24].grid(row=1, column=11)
 
     tk.mainloop()
 
 
-def cap6():
-    print(" ")
-    # Capability 6 can go here
+def cap6(reservation):
+    tk = Tk()
+
+    # Font of bold Text
+    boldFont = tkFont.Font(family='Helvetica', size=14, weight=tkFont.BOLD)
+
+    # Title & Geometry Creation
+    tk.title('Guest Profile')
+    tk.geometry("1300x100+400+250")
+
+    b = []
+
+    for i in range(25):
+        b.append(Button(text=' '))
+
+    # Print Column Titles:
+    b[0] = Button(text='Name', font=boldFont)
+    b[0].grid(row=0, column=0)
+
+    b[1] = Button(text='Check In (yyyy-mm-dd)', font=boldFont)
+    b[1].grid(row=0, column=1)
+
+    b[3] = Button(text='Check Out (yyyy-mm-dd)', font=boldFont)
+    b[3].grid(row=0, column=2)
+
+    b[5] = Button(text='Room Type', font=boldFont)
+    b[5].grid(row=0, column=3)
+
+    b[6] = Button(text='Room Number', font=boldFont)
+    b[6].grid(row=0, column=4)
+
+    b[7] = Button(text='Room Rate', font=boldFont)
+    b[7].grid(row=0, column=5)
+
+    b[8] = Button(text='Total Charge', font=boldFont)
+    b[8].grid(row=0, column=6)
+
+    b[9] = Button(text='Payments Made', font=boldFont)
+    b[9].grid(row=0, column=7)
+
+    b[11] = Button(text='Balance', font=boldFont)
+    b[11].grid(row=0, column=8)
+
+    # Print the reservation information
+    guest = reservation.getGuest()
+    room = reservation.getRoom()
+
+    name = guest.getLastName() + ', ' + guest.getFirstName()
+    b[13] = Button(text=name)
+    b[13].grid(row=1, column=0)
+
+    b[14] = Button(text=reservation.getCheckIn())
+    b[14].grid(row=1, column=1)
+
+    b[15] = Button(text=reservation.getCheckOut())
+    b[15].grid(row=1, column=2)
+
+    b[16] = Button(text=str(room.getRoomNumber()))
+    b[16].grid(row=1, column=3)
+
+    b[17] = Button(text=room.getType())
+    b[17].grid(row=1, column=4)
+
+    txt = '$' + str(room.getRate()) + ' per day'
+    b[18] = Button(text=txt)
+    b[18].grid(row=1, column=5)
+
+    txt = '$' + str(reservation.getTotalCharge())
+    b[19] = Button(text=txt)
+    b[19].grid(row=1, column=6)
+
+    txt = '$' + str(reservation.getPaymentsMade())
+    b[20] = Button(text=txt)
+    b[20].grid(row=1, column=7)
+
+    txt = '$' + str(reservation.getBalance())
+    b[21] = Button(text=txt)
+    b[21].grid(row=1, column=8)
+
+    tk.mainloop()
 
 
 def cap7():

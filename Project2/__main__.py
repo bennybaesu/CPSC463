@@ -8,6 +8,9 @@
 
 import menu
 import capabilities
+import sample
+
+guestList, roomList, reservationList = sample.getSampleData()
 
 # Capability 1: Screen that shows all rooms and their current status.
 # Capability 2: Screen showing a list of the rooms and who is staying in the room for each day for the next 7 days.
@@ -36,10 +39,10 @@ while True:
         capabilities.cap4()
 
     elif menuChoice == 5:
-        capabilities.cap5()
+        capabilities.cap5(guestList[1])
 
     elif menuChoice == 6:
-        capabilities.cap6()
+        capabilities.cap6(reservationList[1])
 
     elif menuChoice == 7:
         capabilities.cap7()
