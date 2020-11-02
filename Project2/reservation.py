@@ -12,6 +12,7 @@ class Reservation:
         self.totalCharge = 0.00
         self.paymentsMade = 0.00
         self.balance = 0.00
+        self.reservationWebsite = ' '
 
     def setGuest(self, g):
         self.guest = g
@@ -34,6 +35,9 @@ class Reservation:
     def setBalance(self, b):
         self.balance = b
 
+    def setReservationWebsite(self, rw):
+        self.reservationWebsite = rw
+
     def getGuest(self):
         return self.guest
 
@@ -54,3 +58,6 @@ class Reservation:
 
     def getBalance(self):
         return self.balance
+
+    def getReservationWebsite(self):
+        return self.reservationWebsite

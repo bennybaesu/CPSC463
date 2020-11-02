@@ -1,7 +1,7 @@
 import room
 import guest
 import reservation
-from PIL import Image
+import housekeeping
 
 
 def getSampleData():
@@ -108,6 +108,57 @@ def getSampleData():
     sampleReservation[2].setBalance(00.00)
     sampleReservation[3].setBalance(00.00)
 
+    sampleReservation[0].setReservationWebsite('www.booking.com')
+    sampleReservation[1].setReservationWebsite('www.hotels.com')
+    sampleReservation[2].setReservationWebsite('www.trivago.com')
+    sampleReservation[3].setReservationWebsite('www.expedia.com')
+
     return sampleGuest, sampleRoom, sampleReservation
 
+
+def getSampleHouskeeping():
+    guestList, roomList, reservationList = getSampleData()
+
+    sampleHousekeeping = [housekeeping.Housekeeping(), housekeeping.Housekeeping(), housekeeping.Housekeeping(),
+                          housekeeping.Housekeeping()]
+
+    sampleHousekeeping[0].setRoom(roomList[0])
+    sampleHousekeeping[1].setRoom(roomList[1])
+    sampleHousekeeping[2].setRoom(roomList[2])
+    sampleHousekeeping[3].setRoom(roomList[3])
+
+    sampleHousekeeping[0].setHousekeepName('Melissa')
+    sampleHousekeeping[1].setHousekeepName('Josephine')
+    sampleHousekeeping[2].setHousekeepName('Maria')
+    sampleHousekeeping[3].setHousekeepName('John')
+
+    sampleHousekeeping[0].setBathroom()
+    sampleHousekeeping[1].setBathroom()
+    sampleHousekeeping[2].setBathroom()
+    sampleHousekeeping[3].setBathroom()
+
+    sampleHousekeeping[0].setTowels()
+    sampleHousekeeping[1].setTowels()
+    sampleHousekeeping[2].setTowels()
+    sampleHousekeeping[3].setTowels()
+
+    sampleHousekeeping[0].setBedSheets()
+    sampleHousekeeping[1].setBedSheets()
+    sampleHousekeeping[2].setBedSheets()
+    sampleHousekeeping[3].setBedSheets()
+
+    sampleHousekeeping[0].setVacuum()
+    sampleHousekeeping[1].setVacuum()
+    sampleHousekeeping[2].setVacuum()
+    sampleHousekeeping[3].setVacuum()
+
+    sampleHousekeeping[0].setDusting()
+    sampleHousekeeping[1].setDusting()
+    sampleHousekeeping[2].setDusting()
+    sampleHousekeeping[3].setDusting()
+
+    sampleHousekeeping[0].setElectronics()
+    sampleHousekeeping[1].setElectronics()
+    sampleHousekeeping[2].setElectronics()
+    sampleHousekeeping[3].setElectronics()
 
