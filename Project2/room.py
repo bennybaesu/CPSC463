@@ -28,3 +28,8 @@ class Room:
 
     def getStatus(self):
         return self.status
+
+    def printInfo(self):  # added by Frank
+        # Return a formatted string with room number and type
+        # Will print room status separately so I can change colors on button
+        return 'Room {} \n({})\n'.format(self.number, self.type)

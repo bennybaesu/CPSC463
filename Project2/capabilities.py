@@ -5,6 +5,7 @@ import datetime
 import sample
 
 guestList, roomList, reservationList = sample.getSampleData()
+housekeepingList = sample.getSampleHouskeeping()
 
 
 # Function to display ID photos
@@ -18,23 +19,255 @@ def viewIdPhoto(fileName):
 
 
 def cap1():
-    print(" ")
-    # Capability 1 can go here
+    room_win = Tk()  # Creating a window object
+    room_win.title('All Rooms')
+    room_win.geometry("500x500")
+
+    top_frame = Frame(room_win)
+    top_frame.pack()
+
+    button_list = []
+    # Initialize empty button list before loop
+    for y in range(len(roomList)):
+        button_list.append(Button(text=' '))
+
+    def printMsg():
+        print("Room clicked!")
+
+    # TODO pass in objects from reservationList into cap6
+    # For loop to print room buttons
+    for f in range(len(roomList)):
+        button_list[f] = Button(top_frame, text=roomList[f].printInfo(), fg="BLACK", command=printMsg)
+        button_list[f].grid(row=0, column=f)
+
+    # Separate loop to display different colored status
+    status_labels = []
+    # Initialize empty list before loop
+    for a in range(len(roomList)):
+        status_labels.append(Label(text=' '))
+
+    # Displays different colored statuses
+    for x in range(len(roomList)):
+        if roomList[x].getStatus() == 'Available':
+            status_labels[x] = (Label(top_frame, text=roomList[x].getStatus(), fg="GREEN"))
+            status_labels[x].grid(row=1, column=x)
+        else:
+            status_labels[x] = (Label(top_frame, text=roomList[x].getStatus(), fg="RED"))
+            status_labels[x].grid(row=1, column=x)
+
+    room_win.mainloop()
 
 
+# Weekly list of guests staying in all rooms
 def cap2():
-    print(" ")
-    # Capability 2 can go here
+    # TODO get guest information on each room along with the days they are staying
+    # Window settings
+    week_win = Tk()
+    week_win.title('Weekly Schedule')
+    week_win.geometry("900x600")
+    cap2_frame = Frame(week_win)
+    cap2_frame.pack()
+
+    boldFont = tkFont.Font(family='Helvetica', size=14, weight=tkFont.BOLD)
+
+    # Will show the next 7 days in (mm/dd/yyyy)
+    curr_date = datetime.datetime.today()  # Today's date
+
+    # Initializing list for date buttons
+    date_buttons = []
+    for c in range(7):
+        date_buttons.append(Button(text=' '))
+
+    # Displays the next 7 dates
+    for d in range(7):
+        date_buttons[d] = Button(cap2_frame, text=curr_date.strftime("%m/%d/%y"), fg="BLACK", font=boldFont)
+        date_buttons[d].grid(row=0, column=d + 1)
+        curr_date = curr_date + datetime.timedelta(days=1)  # increments days
+
+    room_col = []
+    # Initialize empty list before loop
+    for c in range(len(roomList)):
+        room_col.append(Button(text=' '))
+
+    # TODO get guest information on each room along with the days they are staying(if anything just hardcode for now)
+    for r in range(len(roomList)):
+        room_col[r] = Button(cap2_frame, text="Room " + str(roomList[r].getRoomNumber()), fg="BLACK", font=boldFont)
+        room_col[r].grid(row=r + 1, column=0)
+
+    # Hard coding names into columns for now for display purposes
+    name1 = guestList[0].getFirstName() + ' ' + guestList[0].getLastName()
+    name2 = guestList[1].getFirstName() + ' ' + guestList[1].getLastName()
+    name3 = guestList[2].getFirstName() + ' ' + guestList[2].getLastName()
+    name4 = guestList[3].getFirstName() + ' ' + guestList[3].getLastName()
+
+    # Checked in
+    guest1_ci = Label(cap2_frame, text=name1, fg="BLUE")
+    guest1_ci.grid(row=1, column=6)
+
+    guest2_ci = Label(cap2_frame, text=name2, fg="BLUE")
+    guest2_ci.grid(row=2, column=6)
+
+    guest3_ci = Label(cap2_frame, text=name3, fg="BLUE")
+    guest3_ci.grid(row=3, column=6)
+
+    guest4_ci = Label(cap2_frame, text=name4, fg="BLUE")
+    guest4_ci.grid(row=4, column=6)
+
+    # Checked out
+    guest1_co = Label(cap2_frame, text=name1, fg="BLUE")
+    guest1_co.grid(row=1, column=7)
+
+    guest2_co = Label(cap2_frame, text=name2, fg="BLUE")
+    guest2_co.grid(row=2, column=7)
+
+    guest3_co = Label(cap2_frame, text=name3, fg="BLUE")
+    guest3_co.grid(row=3, column=7)
+
+    guest4_co = Label(cap2_frame, text=name4, fg="BLUE")
+    guest4_co.grid(row=4, column=7)
+
+    week_win.mainloop()
 
 
 def cap3():
-    print(" ")
-    # Capability 3 can go here
+    tk = Tk()
+    # Font of bold Text
+    boldFont = tkFont.Font(family='Helvetica', size=14, weight=tkFont.BOLD)
+    b = []
+    for i in range(25):
+        b.append(Button(text=' '))
+
+    b[0] = Button(text='Guest Name', font=boldFont)
+    b[0].grid(row=0, column=0)
+    b[1] = Button(text="Check In")
+    b[1].grid(row=0, column=1)
+    b[2] = Button(text="Check Out")
+    b[2].grid(row=0, column=2)
+    b[3] = Button(text="Room Number")
+    b[3].grid(row=0, column=3)
+    b[4] = Button(text="Total Charge")
+    b[4].grid(row=0, column=4)
+    b[5] = Button(text="Current Balance")
+    b[5].grid(row=0, column=5)
+    b[6] = Button(text="Reservation Site")
+    b[6].grid(row=0, column=6)
+
+    count = 0
+    rowNum = 1
+    for r in reservationList:
+        name = r.getGuest().getFirstName() + " " + r.getGuest().getLastName()
+        b[count] = Button(text=name)
+        b[count].grid(row=rowNum, column=0)
+
+        checkin = r.getCheckIn()
+        b[count] = Button(text=checkin)
+        b[count].grid(row=rowNum, column=1)
+
+        checkout = r.getCheckOut()
+        b[count] = Button(text=checkout)
+        b[count].grid(row=rowNum, column=2)
+
+        room = r.getRoom().getRoomNumber()
+        b[count] = Button(text=room)
+        b[count].grid(row=rowNum, column=3)
+
+        totalCharge = r.getTotalCharge()
+        b[count] = Button(text=totalCharge)
+        b[count].grid(row=rowNum, column=4)
+
+        totalBalance = r.getBalance()
+        b[count] = Button(text=totalBalance)
+        b[count].grid(row=rowNum, column=5)
+
+        site = r.getReservationWebsite()
+        b[count] = Button(text=site)
+        b[count].grid(row=rowNum, column=6)
+
+        count += 1
+        rowNum += 1
+
+    tk.mainloop()
 
 
 def cap4():
-    print(" ")
-    # Capability 4 can go here
+    tk = Tk()
+
+    # Font of bold Text
+    boldFont = tkFont.Font(family='Helvetica', size=14, weight=tkFont.BOLD)
+    b = []
+
+    sizeOf = 8 + (len(housekeepingList) * 8)
+    for i in range(sizeOf):
+        b.append(Button(text=' '))
+
+    b[0] = Button(text='Room', font=boldFont)
+    b[0].grid(row=0, column=0)
+    b[1] = Button(text="House Keeper", font=boldFont)
+    b[1].grid(row=0, column=1)
+    b[2] = Button(text="Bathroom", font=boldFont)
+    b[2].grid(row=0, column=2)
+    b[3] = Button(text="Towels", font=boldFont)
+    b[3].grid(row=0, column=3)
+    b[4] = Button(text="Bed Sheets", font=boldFont)
+    b[4].grid(row=0, column=4)
+    b[5] = Button(text="Vacuum", font=boldFont)
+    b[5].grid(row=0, column=5)
+    b[6] = Button(text="Dusting", font=boldFont)
+    b[6].grid(row=0, column=6)
+    b[7] = Button(text="Electronics", font=boldFont)
+    b[7].grid(row=0, column=7)
+
+    count = 8
+    rowNumb = 1
+    def printTrueFalse(value):
+        if value:
+            return "Yes"
+        else:
+            return "No"
+
+    for r in housekeepingList:
+        room = r.getRoomNumber()
+        b[count] = Button(text=room)
+        b[count].grid(row=rowNumb, column=0)
+        count += 1
+
+        housekeeper = r.getHousekeepName()
+        b[count] = Button(text=housekeeper)
+        b[count].grid(row=rowNumb, column=1)
+        count += 1
+
+        bathroom = r.getBathroom()
+        b[count] = Button(text=printTrueFalse(bathroom))
+        b[count].grid(row=rowNumb, column=2)
+        count += 1
+
+        towels = r.getTowels()
+        b[count] = Button(text=printTrueFalse(towels))
+        b[count].grid(row=rowNumb, column=3)
+        count += 1
+
+        bedsheets = r.getBedSheets()
+        b[count] = Button(text=printTrueFalse(bedsheets))
+        b[count].grid(row=rowNumb, column=4)
+        count += 1
+
+        vacuum = r.getVacuum()
+        b[count] = Button(text=printTrueFalse(vacuum))
+        b[count].grid(row=rowNumb, column=5)
+        count += 1
+
+        dust = r.getDusting()
+        b[count] = Button(text=printTrueFalse(dust))
+        b[count].grid(row=rowNumb, column=6)
+        count += 1
+
+        electronics = r.getElectronics()
+        b[count] = Button(text=printTrueFalse(electronics))
+        b[count].grid(row=rowNumb, column=7)
+        count += 1
+        rowNumb += 1
+
+    tk.mainloop()
 
 
 def cap5(guest):
