@@ -219,6 +219,7 @@ def cap4():
 
     count = 8
     rowNumb = 1
+
     def printTrueFalse(value):
         if value:
             return "Yes"
@@ -511,13 +512,99 @@ def cap7():
             if r.getCheckOut() == searcher:
                 searchList.append(r.getGuest())
 
+    if len(searchList) == 0:
+        print("No guest matching that search criteria exists.")
+    else:
+        while True:
+            print('List of guests matching search:')
+            count = 1
+            for i in searchList:
+                name = '(' + str(count) + ') - ' + i.getFirstName() + ' ' + i.getLastName()
+                print(name)
 
+            choice = int(input("Enter the choice of which guest you would like to view: "))
+            if 1 <= choice <= len(searchList):
+                break
+            else:
+                print("That is an invalid option. Try again.")
 
-
-
-
+        cap5(searchList[choice - 1])
 
 
 def cap8():
-    print(" ")
-    # Capability 8 can go here
+    listOfReservationsToday = []
+    today = datetime.date(2000, 1, 1) # Hardcoded date, for now
+
+    for r in reservationList:
+        if r.getReservationDate() == today:
+            listOfReservationsToday.append(r)
+
+    tk = Tk()
+
+    # Font of bold Text
+    boldFont = tkFont.Font(family='Helvetica', size=14, weight=tkFont.BOLD)
+
+    # Title & Geometry Creation
+    tk.title('Guest Profile')
+    tk.geometry("1300x400+400+250")
+
+    b = []
+    moneyMade = 0
+
+    for i in range(7+(len(reservationList)*5)):
+        b.append(Button(text=' '))
+
+    # Print Column Titles:
+    b[0] = Button(text='Room Number', font=boldFont)
+    b[0].grid(row=0, column=0)
+
+    b[1] = Button(text='Guest Name', font=boldFont)
+    b[1].grid(row=0, column=1)
+
+    b[2] = Button(text='Date In (yyyy-mm-dd)', font=boldFont)
+    b[2].grid(row=0, column=2)
+
+    b[3] = Button(text='Date Out (yyyy-mm-dd)', font=boldFont)
+    b[3].grid(row=0, column=3)
+
+    b[4] = Button(text='Amount Paid', font=boldFont)
+    b[4].grid(row=0, column=4)
+    count = 5
+    row = 1
+
+    for r in reservationList:
+        room = r.getRoom()
+        b[count] = Button(text=room.getRoomNumber())
+        b[count].grid(row=row, column=0)
+        count += 1
+
+        guest = r.getGuest()
+        guestName = guest.getLastName() + ', ' + guest.getFirstName()
+        b[count] = Button(text=guestName)
+        b[count].grid(row=row, column=1)
+        count += 1
+
+        b[count] = Button(text=r.getCheckIn())
+        b[count].grid(row=row, column=2)
+        count += 1
+
+        b[count] = Button(text=r.getCheckOut())
+        b[count].grid(row=row, column=3)
+        count += 1
+
+        amountPaid = '$' + str(r.getTotalCharge())
+        moneyMade += int(r.getTotalCharge())
+        b[count] = Button(text=amountPaid)
+        b[count].grid(row=row, column=4)
+        count += 1
+        row += 1
+
+    row += 2
+    b[count] = Button(text='Total Money Made Today:', font=boldFont)
+    b[count].grid(row=row, column=0)
+
+    moneyMadeString = '$' + str(moneyMade)
+    b[count] = Button(text=moneyMadeString)
+    b[count].grid(row=row, column=1)
+
+    tk.mainloop()
