@@ -448,8 +448,74 @@ def cap6(reservation):
 
 
 def cap7():
-    print(" ")
-    # Capability 7 can go here
+    print('\n')
+
+    while True:
+        options = ['(1) - First Name',
+                   '(2) - Last Name',
+                   '(3) - Room Number',
+                   '(4) - Phone Number',
+                   '(5) - Street Address',
+                   '(6) - Check In Date',
+                   '(7) - Check Out Date']
+
+        print("Search for guest by:")
+        for o in options:
+            print(o)
+
+        choice = int(input("Enter choice: "))
+
+        if 1 <= choice <= 7:
+            break
+        else:
+            print("That was an invalid option. Try again.")
+
+    searcher = ' '
+    searchList = []
+
+    if choice == 1:
+        searcher = input("Enter first name you want to search by: ")
+        for g in guestList:
+            if g.getFirstName() == searcher:
+                searchList.append(g)
+    elif choice == 2:
+        searcher = input("Enter last name you want to search by: ")
+        for g in guestList:
+            if g.getLastName() == searcher:
+                searchList.append(g)
+    elif choice == 3:
+        searcher = input("Enter room number you want to search by: ")
+        for r in reservationList:
+            temp = r.getRoom()
+            temp = temp.getRoomNumber()
+            if str(temp) == searcher:
+                searchList.append(r.getGuest())
+    elif choice == 4:
+        searcher = int(input("Enter phone number you want to search by: "))
+        for g in guestList:
+            if g.getPhoneNumber() == searcher:
+                searchList.append(g)
+    elif choice == 5:
+        searcher = input("Enter street address you want to search by: ")
+        for g in guestList:
+            if g.getAddress() == searcher:
+                searchList.append(g)
+    elif choice == 6:
+        searcher = input("Enter check-in date you want to search by (yyyy-mm-dd): ")
+        for r in reservationList:
+            if r.getCheckIn() == searcher:
+                searchList.append(r.getGuest())
+    elif choice == 7:
+        searcher = input("Enter check-out date you want to search by (yyyy-mm-dd): ")
+        for r in reservationList:
+            if r.getCheckOut() == searcher:
+                searchList.append(r.getGuest())
+
+
+
+
+
+
 
 
 def cap8():

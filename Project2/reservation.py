@@ -8,6 +8,7 @@ class Reservation:
         self.guest = ' '
         self.checkIn = datetime.datetime(2000, 1, 1, 15, 00)
         self.checkOut = datetime.datetime(2000, 1, 2, 11, 00)
+        self.reservationDate = datetime.date(2000, 1, 1)
         self.room = ' '
         self.totalCharge = 0.00
         self.paymentsMade = 0.00
@@ -22,6 +23,9 @@ class Reservation:
 
     def setCheckOut(self, co):
         self.checkOut = co
+
+    def setReservationDate(self, rd):
+        self.reservationDate = rd
 
     def setRoom(self, r):
         self.room = r
@@ -61,3 +65,6 @@ class Reservation:
 
     def getReservationWebsite(self):
         return self.reservationWebsite
+
+    def getReservationDate(self):
+        return self.reservationDate
