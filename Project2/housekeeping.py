@@ -78,3 +78,6 @@ class Housekeeping:
 
     def getElectronics(self):
         return self.electronics
+
+    def getClean(self):
+        return self.clean
