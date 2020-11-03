@@ -18,6 +18,7 @@ def viewIdPhoto(fileName):
     top.mainloop()
 
 
+# Capability by Frank Mirando
 def cap1():
     room_win = Tk()  # Creating a window object
     room_win.title('All Rooms')
@@ -58,7 +59,7 @@ def cap1():
     room_win.mainloop()
 
 
-# Weekly list of guests staying in all rooms
+# Capability by Frank Mirando
 def cap2():
     # TODO get guest information on each room along with the days they are staying
     # Window settings
@@ -129,6 +130,7 @@ def cap2():
     week_win.mainloop()
 
 
+# Capability by Jeremy Viray
 def cap3():
     tk = Tk()
     tk.title('Current Reservations')
@@ -190,6 +192,7 @@ def cap3():
     tk.mainloop()
 
 
+# Capability by Jeremy Viray
 def cap4():
     tk = Tk()
     tk.title('Housekeeping')
@@ -273,6 +276,7 @@ def cap4():
     tk.mainloop()
 
 
+# Capability by Benjamin Baesu
 def cap5(guest):
     tk = Tk()
 
@@ -368,6 +372,7 @@ def cap5(guest):
     tk.mainloop()
 
 
+# Capability by Benjamin Baesu
 def cap6(reservation):
     tk = Tk()
 
@@ -535,7 +540,7 @@ def cap7():
 
 def cap8():
     listOfReservationsToday = []
-    today = datetime.date(2000, 1, 1) # Hardcoded date, for now
+    today = datetime.date(2000, 1, 1)  # Hardcoded date, for now
 
     for r in reservationList:
         if r.getReservationDate() == today:
@@ -553,7 +558,7 @@ def cap8():
     b = []
     moneyMade = 0
 
-    for i in range(7+(len(reservationList)*5)):
+    for i in range(7 + (len(reservationList) * 5)):
         b.append(Button(text=' '))
 
     # Print Column Titles:

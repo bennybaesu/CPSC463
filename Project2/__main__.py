@@ -1,10 +1,10 @@
 # coding=utf-8
 # CPSC 463 | SOFTWARE TESTING
 # WRITTEN BY:
-#           Benjamin Baesu
-#           (Add Group Member Name)
-#           (Add Group Member Name)
-#           (Add Group Member Name)
+#           Benjamin Baesu (Capabilities 5 and 6)
+#           Tristan Bui (Capabilities 7 and 8)
+#           Frank Mirando (Capabilities 1 and 2)
+#           Jeremy Viray (Capabilites 3 and 4)
 
 import menu
 import capabilities
