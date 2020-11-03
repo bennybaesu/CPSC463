@@ -131,6 +131,7 @@ def cap2():
 
 def cap3():
     tk = Tk()
+    tk.title('Current Reservations')
     # Font of bold Text
     boldFont = tkFont.Font(family='Helvetica', size=14, weight=tkFont.BOLD)
     b = []
@@ -191,6 +192,7 @@ def cap3():
 
 def cap4():
     tk = Tk()
+    tk.title('Housekeeping')
 
     # Font of bold Text
     boldFont = tkFont.Font(family='Helvetica', size=14, weight=tkFont.BOLD)
@@ -373,7 +375,7 @@ def cap6(reservation):
     boldFont = tkFont.Font(family='Helvetica', size=14, weight=tkFont.BOLD)
 
     # Title & Geometry Creation
-    tk.title('Guest Profile')
+    tk.title('Current Stay')
     tk.geometry("1300x100+400+250")
 
     b = []
@@ -542,10 +544,10 @@ def cap8():
     tk = Tk()
 
     # Font of bold Text
-    boldFont = tkFont.Font(family='Helvetica', size=14, weight=tkFont.BOLD)
+    boldFont = tkFont.Font(family='Helvetica', size=13, weight=tkFont.BOLD)
 
     # Title & Geometry Creation
-    tk.title('Guest Profile')
+    tk.title("Today's Reservations")
     tk.geometry("1300x400+400+250")
 
     b = []
