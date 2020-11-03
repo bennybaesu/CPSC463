@@ -72,10 +72,10 @@ def getSampleData():
     sampleRoom[2].setRate(200)
     sampleRoom[3].setRate(600)
 
-    sampleRoom[0].setType('Single Room')
-    sampleRoom[1].setType('Double Room')
-    sampleRoom[2].setType('Full Suite')
-    sampleRoom[3].setType('Master Suite')
+    sampleRoom[0].setType('King')
+    sampleRoom[1].setType('Double Queen')
+    sampleRoom[2].setType('Double Queen with Kitchen')
+    sampleRoom[3].setType('Suite')
 
     sampleRoom[0].setStatus('Occupied')
     sampleRoom[1].setStatus('Occupied')
