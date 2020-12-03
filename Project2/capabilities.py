@@ -17,6 +17,12 @@ def viewIdPhoto(fileName):
     canvas.create_image(20, 20, anchor=NW, image=img)
     top.mainloop()
 
+def editInfo():
+    top = Toplevel()
+    canvas = Canvas(top, width=500, height=300)
+    canvas.pack()
+    top.mainloop()
+
 
 # Capability by Frank Mirando
 def cap1():
@@ -25,20 +31,28 @@ def cap1():
     room_win.geometry("500x500")
 
     top_frame = Frame(room_win)
-    top_frame.pack()
+    top_frame.grid()
 
     button_list = []
     # Initialize empty button list before loop
     for y in range(len(roomList)):
         button_list.append(Button(text=' '))
 
+    # TODO if room that is clicked is available, lead to screen for cap6 so user can enter guest info. Changes to occupied
+    # TODO if room that is clicked is occupied, lead to screen for cap6 and user can mod any info
+    # TODO if room is dirty, warns and asks user: yes -> change to available, no -> do nothing
+    # TODO if room is in maintenance, warns and asks user: yes -> change to available, no -> do nothing
+
+    # Verification that a room button is clicked
     def printMsg():
         print("Room clicked!")
 
-    # TODO pass in objects from reservationList into cap6
+    # TODO pass in reservation object according to which room was clicked
+    # TODO
     # For loop to print room buttons
     for f in range(len(roomList)):
-        button_list[f] = Button(top_frame, text=roomList[f].printInfo(), fg="BLACK", command=printMsg)
+        button_list[f] = Button(top_frame, text=roomList[f].printInfo(), fg="BLACK",
+                                command=lambda: cap6(reservationList[1]))
         button_list[f].grid(row=0, column=f)
 
     # Separate loop to display different colored status
@@ -48,6 +62,7 @@ def cap1():
         status_labels.append(Label(text=' '))
 
     # Displays different colored statuses
+    # If room is available, displayed as green. Anything else is displayed as red
     for x in range(len(roomList)):
         if roomList[x].getStatus() == 'Available':
             status_labels[x] = (Label(top_frame, text=roomList[x].getStatus(), fg="GREEN"))
@@ -57,6 +72,9 @@ def cap1():
             status_labels[x].grid(row=1, column=x)
 
     room_win.mainloop()
+
+
+
 
 
 # Capability by Frank Mirando
@@ -94,6 +112,9 @@ def cap2():
     for r in range(len(roomList)):
         room_col[r] = Button(cap2_frame, text="Room " + str(roomList[r].getRoomNumber()), fg="BLACK", font=boldFont)
         room_col[r].grid(row=r + 1, column=0)
+
+
+
 
     # Hard coding names into columns for now for display purposes
     name1 = guestList[0].getFirstName() + ' ' + guestList[0].getLastName()
@@ -363,7 +384,7 @@ def cap5(guest):
     b[22] = Button(text=temp[1])
     b[22].grid(row=1, column=9)
 
-    b[23] = Button(text=guest.getLicensePlate())
+    b[23] = Button(text=guest.getLicensePlate(), command=lambda: editInfo())
     b[23].grid(row=1, column=10)
 
     b[24] = Button(text='Click to view ID', command=lambda: viewIdPhoto(guest.getIdPhoto()))
@@ -374,7 +395,7 @@ def cap5(guest):
 
 # Capability by Benjamin Baesu
 def cap6(reservation):
-    tk = Tk()
+    tk = Toplevel()
 
     # Font of bold Text
     boldFont = tkFont.Font(family='Helvetica', size=14, weight=tkFont.BOLD)
@@ -389,31 +410,31 @@ def cap6(reservation):
         b.append(Button(text=' '))
 
     # Print Column Titles:
-    b[0] = Button(text='Name', font=boldFont)
+    b[0] = Button(tk, text='Name', font=boldFont)
     b[0].grid(row=0, column=0)
 
-    b[1] = Button(text='Check In (yyyy-mm-dd)', font=boldFont)
+    b[1] = Button(tk, text='Check In (yyyy-mm-dd)', font=boldFont)
     b[1].grid(row=0, column=1)
 
-    b[3] = Button(text='Check Out (yyyy-mm-dd)', font=boldFont)
+    b[3] = Button(tk, text='Check Out (yyyy-mm-dd)', font=boldFont)
     b[3].grid(row=0, column=2)
 
-    b[5] = Button(text='Room Number', font=boldFont)
+    b[5] = Button(tk, text='Room Number', font=boldFont)
     b[5].grid(row=0, column=3)
 
-    b[6] = Button(text='Room Type', font=boldFont)
+    b[6] = Button(tk, text='Room Type', font=boldFont)
     b[6].grid(row=0, column=4)
 
-    b[7] = Button(text='Room Rate', font=boldFont)
+    b[7] = Button(tk, text='Room Rate', font=boldFont)
     b[7].grid(row=0, column=5)
 
-    b[8] = Button(text='Total Charge', font=boldFont)
+    b[8] = Button(tk, text='Total Charge', font=boldFont)
     b[8].grid(row=0, column=6)
 
-    b[9] = Button(text='Payments Made', font=boldFont)
+    b[9] = Button(tk, text='Payments Made', font=boldFont)
     b[9].grid(row=0, column=7)
 
-    b[11] = Button(text='Balance', font=boldFont)
+    b[11] = Button(tk, text='Balance', font=boldFont)
     b[11].grid(row=0, column=8)
 
     # Print the reservation information
@@ -421,35 +442,35 @@ def cap6(reservation):
     room = reservation.getRoom()
 
     name = guest.getLastName() + ', ' + guest.getFirstName()
-    b[13] = Button(text=name)
+    b[13] = Button(tk, text=name)
     b[13].grid(row=1, column=0)
 
-    b[14] = Button(text=reservation.getCheckIn())
+    b[14] = Button(tk, text=reservation.getCheckIn())
     b[14].grid(row=1, column=1)
 
-    b[15] = Button(text=reservation.getCheckOut())
+    b[15] = Button(tk, text=reservation.getCheckOut())
     b[15].grid(row=1, column=2)
 
-    b[16] = Button(text=str(room.getRoomNumber()))
+    b[16] = Button(tk, text=str(room.getRoomNumber()))
     b[16].grid(row=1, column=3)
 
-    b[17] = Button(text=room.getType())
+    b[17] = Button(tk, text=room.getType())
     b[17].grid(row=1, column=4)
 
     txt = '$' + str(room.getRate()) + ' per day'
-    b[18] = Button(text=txt)
+    b[18] = Button(tk, text=txt)
     b[18].grid(row=1, column=5)
 
     txt = '$' + str(reservation.getTotalCharge())
-    b[19] = Button(text=txt)
+    b[19] = Button(tk, text=txt)
     b[19].grid(row=1, column=6)
 
     txt = '$' + str(reservation.getPaymentsMade())
-    b[20] = Button(text=txt)
+    b[20] = Button(tk, text=txt)
     b[20].grid(row=1, column=7)
 
     txt = '$' + str(reservation.getBalance())
-    b[21] = Button(text=txt)
+    b[21] = Button(tk, text=txt)
     b[21].grid(row=1, column=8)
 
     tk.mainloop()
