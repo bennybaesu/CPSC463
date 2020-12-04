@@ -22,6 +22,97 @@ def viewIdPhoto(fileName):
     canvas.create_image(20, 20, anchor=NW, image=img)
     top.mainloop()
 
+def onClick(args):
+    if args == 1:
+        name = input("Enter guest first name: ")
+        lastName = input("Enter guest last name: ")
+        checkin = input("Check in date: ")
+        checkout = input("Check out date: ")
+        roomType = input("Room Type: ")
+        roomNumber = input("Room Number: ")
+        totalCharge = input("Total Charge: ")
+        rate = input("Rate: ")
+        reservationSite = input("Reservation Site: ")
+
+        newRoom = room.Room()
+        newRoom.setRate(rate)
+        newRoom.setType(roomType)
+        newRoom.setRoomNumber(roomNumber)
+        newRoom.setRate(rate)
+
+        newGuest = guest.Guest()
+        newGuest.setFirstName(name)
+        newGuest.setLastName(lastName)
+
+        r = reservation.Reservation()
+        r.setGuest(newGuest)
+        r.setCheckIn(checkin)
+        r.setCheckOut(checkout)
+        r.setRoom(newRoom)
+        r.setReservationWebsite(reservationSite)
+        r.setTotalCharge(totalCharge)
+        reservationList.append(r)
+
+    if args == 2:
+        name = input("Enter Guest First Name to remove: ")
+        for r in reservationList:
+            if r.getGuest().getFirstName() == name:
+                reservationList.remove(r)
+
+
+def onReserveClick(btn):
+    text = btn.cget("text")
+    firstName = text.split()[0]
+
+    for r in reservationList:
+        if firstName == r.getGuest().getFirstName():
+            print("            GUEST INFORMATION\n-----------------------------------------")
+            print(firstName + " " + r.getGuest().getLastName())
+            print("Checkin: %s Checkout: %s" % (r.getCheckIn(), r.getCheckOut()))
+            print("%s Room #%s" % (r.getRoom().getType(), r.getRoom().getRoomNumber()))
+            print("Nightly Rate: $%s Total Charge: $%s" % (r.getRoom().getRate(), r.getTotalCharge()))
+            print("Booked at %s" % (r.getReservationWebsite()))
+
+            response = input(
+                "-----------------------------------------\nWould you like to make any changes? (y/n)\n-----------------------------------------\n")
+            while response == "y":
+                print("What would you like to change? ")
+                change = input(
+                    "(1) Check in\n(2) Checkout\n(3) Room Type\n(4) Room Number\n(5) Rate\n(6) Total Charge\n(7) Reservation Site\n")
+                if change == "1":
+                    checkIn = input("New Check In: ")
+                    r.setCheckIn(checkIn)
+                    response = input("Any other Changes? (y/n)")
+                elif change == "2":
+                    checkOut = input("New Check Out: ")
+                    r.setCheckOut(checkOut)
+                    response = input("Any other Changes? (y/n)")
+                elif change == "3":
+                    type = input("New Room Type: ")
+                    r.getRoom().setType(type)
+                    response = input("Any other Changes? (y/n)")
+                elif change == "4":
+                    number = input("New Room Number: ")
+                    r.getRoom().setRoomNumber(number)
+                    response = input("Any other Changes? (y/n)")
+                elif change == "5":
+                    rate = input("New Nightly Rate: ")
+                    r.getRoom().setRate(rate)
+                    response = input("Any other Changes? (y/n)")
+                elif change == "6":
+                    total = input("New Total Charge: ")
+                    r.setTotalCharge(total)
+                    response = input("Any other Changes? (y/n)")
+                elif change == "7":
+                    site = input("New Reservation Site: ")
+                    r.setReservationWebsite(site)
+                    response = input("Any other Changes? (y/n)")
+            if response == "n":
+                checkGuest = input("Check guest in? (y/n)")
+                if checkGuest == "y":
+                    cap6(r)
+            print("Please close window to save changes and return to main menu")
+
 
 # Capability by Frank Mirando
 def cap1():
@@ -160,14 +251,23 @@ def cap3():
     b[1].grid(row=0, column=1)
     b[2] = Button(text="Check Out")
     b[2].grid(row=0, column=2)
-    b[3] = Button(text="Room Number")
+    b[3] = Button(text="Room Type")
     b[3].grid(row=0, column=3)
-    b[4] = Button(text="Total Charge")
+    b[4] = Button(text="Room Number")
     b[4].grid(row=0, column=4)
-    b[5] = Button(text="Current Balance")
+    b[5] = Button(text="Total Charge")
     b[5].grid(row=0, column=5)
-    b[6] = Button(text="Reservation Site")
+    b[6] = Button(text="Rate")
     b[6].grid(row=0, column=6)
+    b[7] = Button(text="Reservation Site")
+    b[7].grid(row=0, column=7)
+    b[8] = Button(text="Status")
+    b[8].grid(row=0, column=8)
+
+    b[9] = Button(command=lambda: onClick(1), text="Add Reservation")
+    b[9].grid(row=0, column=9)
+    b[10] = Button(command=lambda: onClick(2), text="Delete Reservation")
+    b[10].grid(row=1, column=9)
 
     count = 0
     rowNum = 1
@@ -175,6 +275,7 @@ def cap3():
         name = r.getGuest().getFirstName() + " " + r.getGuest().getLastName()
         b[count] = Button(text=name)
         b[count].grid(row=rowNum, column=0)
+        b[count].configure(command=lambda btn=b[count]: onReserveClick(btn))
 
         checkin = r.getCheckIn()
         b[count] = Button(text=checkin)
@@ -184,21 +285,29 @@ def cap3():
         b[count] = Button(text=checkout)
         b[count].grid(row=rowNum, column=2)
 
+        roomType = r.getRoom().getType()
+        b[count] = Button(text=roomType)
+        b[count].grid(row=rowNum, column=3)
+
         room = r.getRoom().getRoomNumber()
         b[count] = Button(text=room)
-        b[count].grid(row=rowNum, column=3)
+        b[count].grid(row=rowNum, column=4)
 
         totalCharge = r.getTotalCharge()
         b[count] = Button(text=totalCharge)
-        b[count].grid(row=rowNum, column=4)
-
-        totalBalance = r.getBalance()
-        b[count] = Button(text=totalBalance)
         b[count].grid(row=rowNum, column=5)
+
+        rate = r.getRoom().getRate()
+        b[count] = Button(text=rate)
+        b[count].grid(row=rowNum, column=6)
 
         site = r.getReservationWebsite()
         b[count] = Button(text=site)
-        b[count].grid(row=rowNum, column=6)
+        b[count].grid(row=rowNum, column=7)
+
+        status = r.getRoom().getStatus()
+        b[count] = Button(text=status)
+        b[count].grid(row=rowNum, column=8)
 
         count += 1
         rowNum += 1
@@ -245,10 +354,72 @@ def cap4():
         else:
             return "No"
 
+    def onRoomClick(btn):
+        print(btn.cget("text"))
+        room = btn.cget("text")
+
+        for r in housekeepingList:
+            if r.getRoom().getRoomNumber() == room:
+                print("--------------House Keeping Check List--------------")
+                print("input (y) or leave blank")
+                print("Room #%s: %s" % (r.getRoom().getRoomNumber(), r.getStatus()))
+                bath = input("Bathroom: ")
+                towels = input("Towels: ")
+                sheets = input("Bed Sheets: ")
+                vacuum = input("Vacuum: ")
+                dust = input("Dusting: ")
+                elec = input("Electronics: ")
+                checkedIn = input("Is guest checked in? ")
+
+                if bath == "y":
+                    r.setBathroom(True)
+                else:
+                    r.setBathroom(False)
+                if towels == "y":
+                    r.setTowels(True)
+                else:
+                    r.setTowels(False)
+                if sheets == "y":
+                    r.setBedSheets(True)
+                else:
+                    r.setBedSheets(False)
+                if vacuum == "y":
+                    r.setVacuum(True)
+                else:
+                    r.setVacuum(False)
+                if dust == "y":
+                    r.setDusting(True)
+                else:
+                    r.setDusting(False)
+                if elec == "y":
+                    r.setElectronics(True)
+                else:
+                    r.setElectronics(False)
+
+                for x in roomList:
+                    if x.getRoomNumber() == r.getRoom().getRoomNumber():
+                        if r.getBathroom() and r.getTowels() and r.getBedSheets() and r.getVacuum() and r.getDusting() and r.getElectronics():
+                            if checkedIn == "y":
+                                x.setStatus("Occupied")
+                            else:
+                                x.setStatus("Available")
+                        else:
+                            x.setStatus("Dirty")
+
+                        print("Room #%s: %s" % (r.getRoom().getRoomNumber(), x.getStatus()))
+
+                        changeStatus = input("Change room status? (y/n)")
+                        if changeStatus == "y":
+                            statusInput = input("What is the status of the room? ")
+                            x.setStatus(statusInput)
+
+                        print("Please Select another room or close the window to save and return to main menu")
+
     for r in housekeepingList:
         room = r.getRoomNumber()
         b[count] = Button(text=room)
         b[count].grid(row=rowNumb, column=0)
+        b[count].configure(command=lambda btn=b[count]: onRoomClick(btn))
         count += 1
 
         housekeeper = r.getHousekeepName()
