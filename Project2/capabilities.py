@@ -1,6 +1,11 @@
 from tkinter import *
 from tkinter import font as tkFont
-import datetime
+from tkinter import Label as lb
+from tkinter import Entry as entry
+from datetime import datetime, timedelta
+import reservation
+import guest
+import room
 
 import sample
 
@@ -15,12 +20,6 @@ def viewIdPhoto(fileName):
     canvas.pack()
     img = PhotoImage(file=fileName)
     canvas.create_image(20, 20, anchor=NW, image=img)
-    top.mainloop()
-
-def editInfo():
-    top = Toplevel()
-    canvas = Canvas(top, width=500, height=300)
-    canvas.pack()
     top.mainloop()
 
 
@@ -38,7 +37,7 @@ def cap1():
     for y in range(len(roomList)):
         button_list.append(Button(text=' '))
 
-    # TODO if room that is clicked is available, lead to screen for cap6 so user can enter guest info. Changes to occupied
+    # TODO if room that is clicked is available, lead to screen for cap6 so user can enter guest_test info. Changes to occupied
     # TODO if room that is clicked is occupied, lead to screen for cap6 and user can mod any info
     # TODO if room is dirty, warns and asks user: yes -> change to available, no -> do nothing
     # TODO if room is in maintenance, warns and asks user: yes -> change to available, no -> do nothing
@@ -47,7 +46,7 @@ def cap1():
     def printMsg():
         print("Room clicked!")
 
-    # TODO pass in reservation object according to which room was clicked
+    # TODO pass in reservation_test object according to which room was clicked
     # TODO
     # For loop to print room buttons
     for f in range(len(roomList)):
@@ -74,12 +73,9 @@ def cap1():
     room_win.mainloop()
 
 
-
-
-
 # Capability by Frank Mirando
 def cap2():
-    # TODO get guest information on each room along with the days they are staying
+    # TODO get guest_test information on each room along with the days they are staying
     # Window settings
     week_win = Tk()
     week_win.title('Weekly Schedule')
@@ -108,13 +104,10 @@ def cap2():
     for c in range(len(roomList)):
         room_col.append(Button(text=' '))
 
-    # TODO get guest information on each room along with the days they are staying(if anything just hardcode for now)
+    # TODO get guest_test information on each room along with the days they are staying(if anything just hardcode for now)
     for r in range(len(roomList)):
         room_col[r] = Button(cap2_frame, text="Room " + str(roomList[r].getRoomNumber()), fg="BLACK", font=boldFont)
         room_col[r].grid(row=r + 1, column=0)
-
-
-
 
     # Hard coding names into columns for now for display purposes
     name1 = guestList[0].getFirstName() + ' ' + guestList[0].getLastName()
@@ -298,8 +291,83 @@ def cap4():
 
 
 # Capability by Benjamin Baesu
-def cap5(guest):
+def cap5(guest_test):
     tk = Tk()
+
+    # Function to edit the values
+    def editInfo(attribute):
+        newW = Toplevel()
+
+        def quit():
+            newW.destroy()
+            newW.update()
+
+        def update(var):
+            reservationIndex = 0
+            guestIndex = 0
+
+            for c in range(0, len(guestList)):
+                if guest_test == guestList[c]:
+                    guestIndex = c
+            for j in range(0, len(reservationList)):
+                if guest_test == reservationList[j].getGuest():
+                    reservationIndex = j
+
+            if attribute == "First Name":
+                guest_test.setFirstName(var)
+                b[13]['text'] = var
+            elif attribute == "Last Name":
+                guest_test.setLastName(var)
+                b[14]['text'] = var
+            elif attribute == "Phone Number":
+                guest_test.setPhoneNumber(int(var))
+                b[15]['text'] = var
+            elif attribute == "Address":
+                guest_test.setAddress(var)
+                b[16]['text'] = var
+            elif attribute == "City":
+                guest_test.setCity(var)
+                b[17]['text'] = var
+            elif attribute == "State":
+                guest_test.setState(var)
+                b[18]['text'] = var
+            elif attribute == "Zip Code":
+                guest_test.setZip(int(var))
+                b[19]['text'] = var
+            elif attribute == "Email Address":
+                guest_test.setEmail(var)
+                b[20]['text'] = var
+            elif attribute == "ID State":
+                guest_test.setID(var, guest_test.getID()[1])
+                b[21]['text'] = var
+            elif attribute == "ID Number":
+                guest_test.setID(guest_test.getID()[0], var)
+                b[22]['text'] = var
+            elif attribute == "License Plate Number":
+                guest_test.setLicensePlate(var)
+                b[23]['text'] = var
+
+            guestList[guestIndex] = guest_test
+            reservationList[reservationIndex].setGuest(guest_test)
+
+            tk.update()
+
+            # Quit the pop-up window
+            newW.destroy()
+            newW.update()
+
+        txt = "Enter " + attribute
+
+        # Create text box:
+        lb(newW, text=txt).grid(row=0, column=0)
+        e1 = entry(newW)
+        e1.grid(row=0, column=1)
+
+        Button(newW, text='Cancel', command=quit).grid(row=3, column=0, pady=4)
+        Button(newW, text='Update', command=lambda: update(e1.get())).grid(row=3, column=1, pady=4)
+
+        print(e1.get())
+        newW.mainloop()
 
     # Font of bold Text
     boldFont = tkFont.Font(family='Helvetica', size=14, weight=tkFont.BOLD)
@@ -310,11 +378,11 @@ def cap5(guest):
 
     b = []
 
-    for i in range(25):
+    for i in range(26):
         b.append(Button(text=' '))
 
     # Print Column Titles:
-    b[0] = Button(text='Fist Name', font=boldFont)
+    b[0] = Button(tk, text='Fist Name', font=boldFont)
     b[0].grid(row=0, column=0)
 
     b[1] = Button(text='Last Name', font=boldFont)
@@ -350,52 +418,164 @@ def cap5(guest):
     b[12] = Button(text='ID Photo', font=boldFont)
     b[12].grid(row=0, column=11)
 
-    # Print the guest information
+    # Print the guest_test information
 
-    b[13] = Button(text=guest.getFirstName())
+    b[13] = Button(tk, text=guest_test.getFirstName(), command=lambda: editInfo("First Name"))
     b[13].grid(row=1, column=0)
 
-    b[14] = Button(text=guest.getLastName())
+    b[14] = Button(tk, text=guest_test.getLastName(), command=lambda: editInfo("Last Name"))
     b[14].grid(row=1, column=1)
 
-    b[15] = Button(text=str(guest.getPhoneNumber()))
+    b[15] = Button(tk, text=str(guest_test.getPhoneNumber()), command=lambda: editInfo("Phone Number"))
     b[15].grid(row=1, column=2)
 
-    b[16] = Button(text=guest.getAddress())
+    b[16] = Button(tk, text=guest_test.getAddress(), command=lambda: editInfo("Address"))
     b[16].grid(row=1, column=3)
 
-    b[17] = Button(text=guest.getCity())
+    b[17] = Button(tk, text=guest_test.getCity(), command=lambda: editInfo("City"))
     b[17].grid(row=1, column=4)
 
-    b[18] = Button(text=guest.getState())
+    b[18] = Button(tk, text=guest_test.getState(), command=lambda: editInfo("State"))
     b[18].grid(row=1, column=5)
 
-    b[19] = Button(text=str(guest.getZip()))
+    b[19] = Button(tk, text=str(guest_test.getZip()), command=lambda: editInfo("Zip Code"))
     b[19].grid(row=1, column=6)
 
-    b[20] = Button(text=guest.getEmail())
+    b[20] = Button(tk, text=guest_test.getEmail(), command=lambda: editInfo("Email Address"))
     b[20].grid(row=1, column=7)
 
-    temp = guest.getID()
+    temp = guest_test.getID()
 
-    b[21] = Button(text=temp[0])
+    b[21] = Button(tk, text=temp[0], command=lambda: editInfo("ID State"))
     b[21].grid(row=1, column=8)
 
-    b[22] = Button(text=temp[1])
+    b[22] = Button(tk, text=temp[1], command=lambda: editInfo("ID Number"))
     b[22].grid(row=1, column=9)
 
-    b[23] = Button(text=guest.getLicensePlate(), command=lambda: editInfo())
+    b[23] = Button(tk, text=guest_test.getLicensePlate(), command=lambda: editInfo("License Plate Number"))
     b[23].grid(row=1, column=10)
 
-    b[24] = Button(text='Click to view ID', command=lambda: viewIdPhoto(guest.getIdPhoto()))
+    b[24] = Button(tk, text='Click to view ID', command=lambda: viewIdPhoto(guest_test.getIdPhoto()))
     b[24].grid(row=1, column=11)
+
+    b[25] = Label(tk, text='Select attribute to edit')
+    b[25].grid(row=2, column=0)
 
     tk.mainloop()
 
 
 # Capability by Benjamin Baesu
-def cap6(reservation):
+def cap6(reservation_test):
     tk = Toplevel()
+
+    # Function to edit the values
+    def editInfo(attribute):
+        newW = Toplevel()
+
+        def quit_window():
+            newW.destroy()
+            newW.update()
+
+        def update(var):
+            reservationIndex = 0
+            guestIndex = 0
+            roomIndex = 0
+
+            for j in range(0, len(reservationList)):
+                if reservation_test == reservationList[j]:
+                    reservationIndex = j
+            for k in range(0, len(guestList)):
+                if guest_temp == guestList[k]:
+                    guestIndex = 0
+            for l in range(0, len(roomList)):
+                if room_temp == roomList[l]:
+                    roomIndex = 0
+
+            if attribute == "First Name":
+                guest_temp.setFirstName(var)
+                b[10]['text'] = var
+            elif attribute == "Last Name":
+                guest_temp.setLastName(var)
+                b[11]['text'] = var
+            elif attribute == "Room Number":
+                room_temp.setRoomNumber(int(var))
+                b[14]['text'] = var
+            elif attribute == "Room Type":
+                room_temp.setAddress(var)
+                b[15]['text'] = var
+            elif attribute == "Room Rate":
+                guest_temp.setCity(var)
+                b[16]['text'] = var
+            elif attribute == "Total Charge":
+                guest_temp.setState(var)
+                b[17]['text'] = var
+            elif attribute == "Payments Made":
+                guest_temp.setZip(int(var))
+                b[18]['text'] = var
+            elif attribute == "Balance":
+                guest_temp.setEmail(var)
+                b[19]['text'] = var
+
+            guestList[guestIndex] = guest_temp
+            reservationList[reservationIndex].setGuest(guest_temp)
+            reservationList[reservationIndex].setRoom(room_temp)
+            roomList[roomIndex] = room_temp
+
+            tk.update()
+
+            # Quit the pop-up window
+            newW.destroy()
+            newW.update()
+
+        attributeText = "Enter " + attribute
+
+        # Create text box:
+        lb(newW, text=attributeText).grid(row=0, column=0)
+        e1 = entry(newW)
+        e1.grid(row=0, column=1)
+
+        Button(newW, text='Cancel', command=quit_window).grid(row=3, column=0, pady=4)
+        Button(newW, text='Update', command=lambda: update(e1.get())).grid(row=3, column=1, pady=4)
+
+        print(e1.get())
+        newW.mainloop()
+
+    def upDate(var):
+        reservationIndex = 0
+        for j in range(0, len(reservationList)):
+            if reservation_test == reservationList[j]:
+                reservationIndex = j
+
+        if var == "checkin":
+            if reservation_test.getCheckIn() < reservation_test.getCheckOut():
+                x = reservation_test.getCheckIn() + timedelta(days=1)
+                reservation_test.setCheckIn(x)
+                b[12]['text'] = x
+        else:
+            x = reservation_test.getCheckOut() + timedelta(days=1)
+            reservation_test.setCheckOut(x)
+            b[13]['text'] = x
+
+        reservationList[reservationIndex] = reservation_test
+
+    def downDate(var):
+        reservationIndex = 0
+        for j in range(0, len(reservationList)):
+            if reservation_test == reservationList[j]:
+                reservationIndex = j
+
+        if var == "checkin":
+            if reservation_test.getCheckIn() >= datetime.today():
+                x = reservation_test.getCheckIn() - timedelta(days=1)
+                reservation_test.setCheckIn(x)
+                b[12]['text'] = x
+        else:
+            if reservation_test.getCheckOut() >= reservation_test.getCheckIn():
+                x = reservation_test.getCheckOut() - timedelta(days=1)
+                reservation_test.setCheckOut(x)
+                b[13]['text'] = x
+
+        reservationList[reservationIndex] = reservation_test
 
     # Font of bold Text
     boldFont = tkFont.Font(family='Helvetica', size=14, weight=tkFont.BOLD)
@@ -406,72 +586,91 @@ def cap6(reservation):
 
     b = []
 
-    for i in range(25):
+    for i in range(27):
         b.append(Button(text=' '))
 
     # Print Column Titles:
-    b[0] = Button(tk, text='Name', font=boldFont)
+    b[0] = Button(tk, text='First Name', font=boldFont)
     b[0].grid(row=0, column=0)
 
-    b[1] = Button(tk, text='Check In (yyyy-mm-dd)', font=boldFont)
+    b[1] = Button(tk, text='Last Name', font=boldFont)
     b[1].grid(row=0, column=1)
 
+    b[2] = Button(tk, text='Check In (yyyy-mm-dd)', font=boldFont)
+    b[2].grid(row=0, column=2)
+
     b[3] = Button(tk, text='Check Out (yyyy-mm-dd)', font=boldFont)
-    b[3].grid(row=0, column=2)
+    b[3].grid(row=0, column=3)
 
-    b[5] = Button(tk, text='Room Number', font=boldFont)
-    b[5].grid(row=0, column=3)
+    b[4] = Button(tk, text='Room Number', font=boldFont)
+    b[4].grid(row=0, column=4)
 
-    b[6] = Button(tk, text='Room Type', font=boldFont)
-    b[6].grid(row=0, column=4)
+    b[5] = Button(tk, text='Room Type', font=boldFont)
+    b[5].grid(row=0, column=5)
 
-    b[7] = Button(tk, text='Room Rate', font=boldFont)
-    b[7].grid(row=0, column=5)
+    b[6] = Button(tk, text='Room Rate', font=boldFont)
+    b[6].grid(row=0, column=6)
 
-    b[8] = Button(tk, text='Total Charge', font=boldFont)
-    b[8].grid(row=0, column=6)
+    b[7] = Button(tk, text='Total Charge', font=boldFont)
+    b[7].grid(row=0, column=7)
 
-    b[9] = Button(tk, text='Payments Made', font=boldFont)
-    b[9].grid(row=0, column=7)
+    b[8] = Button(tk, text='Payments Made', font=boldFont)
+    b[8].grid(row=0, column=8)
 
-    b[11] = Button(tk, text='Balance', font=boldFont)
-    b[11].grid(row=0, column=8)
+    b[9] = Button(tk, text='Balance', font=boldFont)
+    b[9].grid(row=0, column=9)
 
-    # Print the reservation information
-    guest = reservation.getGuest()
-    room = reservation.getRoom()
+    # Print the reservation_test information
+    guest_temp = reservation_test.getGuest()
+    room_temp = reservation_test.getRoom()
 
-    name = guest.getLastName() + ', ' + guest.getFirstName()
-    b[13] = Button(tk, text=name)
-    b[13].grid(row=1, column=0)
+    b[10] = Button(tk, text=guest_temp.getFirstName(), command=lambda: editInfo("First Name"))
+    b[10].grid(row=2, column=0)
 
-    b[14] = Button(tk, text=reservation.getCheckIn())
-    b[14].grid(row=1, column=1)
+    b[11] = Button(tk, text=guest_temp.getLastName(), command=lambda: editInfo("Last Name"))
+    b[11].grid(row=2, column=1)
 
-    b[15] = Button(tk, text=reservation.getCheckOut())
-    b[15].grid(row=1, column=2)
+    b[20] = Button(tk, text="up", command=lambda: upDate("checkin"))
+    b[20].grid(row=1, column=2)
 
-    b[16] = Button(tk, text=str(room.getRoomNumber()))
-    b[16].grid(row=1, column=3)
+    checkin = reservation_test.getCheckIn()
+    b[12] = Button(tk, text=checkin)
+    b[12].grid(row=2, column=2)
 
-    b[17] = Button(tk, text=room.getType())
-    b[17].grid(row=1, column=4)
+    b[22] = Button(tk, text="down", command=lambda: downDate("checkin"))
+    b[22].grid(row=3, column=2)
 
-    txt = '$' + str(room.getRate()) + ' per day'
-    b[18] = Button(tk, text=txt)
-    b[18].grid(row=1, column=5)
+    b[21] = Button(tk, text="up", command=lambda: upDate("checkout"))
+    b[21].grid(row=1, column=3)
 
-    txt = '$' + str(reservation.getTotalCharge())
-    b[19] = Button(tk, text=txt)
-    b[19].grid(row=1, column=6)
+    checkout = reservation_test.getCheckOut()
+    b[13] = Button(tk, text=checkout)
+    b[13].grid(row=2, column=3)
 
-    txt = '$' + str(reservation.getPaymentsMade())
-    b[20] = Button(tk, text=txt)
-    b[20].grid(row=1, column=7)
+    b[23] = Button(tk, text="down", command=lambda: downDate("checkout"))
+    b[23].grid(row=3, column=3)
 
-    txt = '$' + str(reservation.getBalance())
-    b[21] = Button(tk, text=txt)
-    b[21].grid(row=1, column=8)
+    b[14] = Button(tk, text=str(room_temp.getRoomNumber()), command=lambda: editInfo("Room Number"))
+    b[14].grid(row=2, column=4)
+
+    b[15] = Button(tk, text=room_temp.getType(), command=lambda: editInfo("Room Type"))
+    b[15].grid(row=2, column=5)
+
+    txt = '$' + str(room_temp.getRate()) + ' per day'
+    b[16] = Button(tk, text=txt, command=lambda: editInfo("Room Rate"))
+    b[16].grid(row=2, column=6)
+
+    txt = '$' + str(reservation_test.getTotalCharge())
+    b[17] = Button(tk, text=txt, command=lambda: editInfo("Total Charge"))
+    b[17].grid(row=2, column=7)
+
+    txt = '$' + str(reservation_test.getPaymentsMade())
+    b[18] = Button(tk, text=txt, command=lambda: editInfo("Payments Made"))
+    b[18].grid(row=2, column=8)
+
+    txt = '$' + str(reservation_test.getBalance())
+    b[19] = Button(tk, text=txt, command=lambda: editInfo("Balance"))
+    b[19].grid(row=2, column=9)
 
     tk.mainloop()
 
@@ -488,7 +687,7 @@ def cap7():
                    '(6) - Check In Date',
                    '(7) - Check Out Date']
 
-        print("Search for guest by:")
+        print("Search for guest_test by:")
         for o in options:
             print(o)
 
@@ -541,7 +740,7 @@ def cap7():
                 searchList.append(r.getGuest())
 
     if len(searchList) == 0:
-        print("No guest matching that search criteria exists.")
+        print("No guest_test matching that search criteria exists.")
     else:
         while True:
             print('List of guests matching search:')
@@ -550,7 +749,7 @@ def cap7():
                 name = '(' + str(count) + ') - ' + i.getFirstName() + ' ' + i.getLastName()
                 print(name)
 
-            choice = int(input("Enter the choice of which guest you would like to view: "))
+            choice = int(input("Enter the choice of which guest_test you would like to view: "))
             if 1 <= choice <= len(searchList):
                 break
             else:

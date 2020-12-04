@@ -10,7 +10,7 @@ def getSampleData():
     sampleReservation = [reservation.Reservation(), reservation.Reservation(), reservation.Reservation(),
                          reservation.Reservation()]
 
-    # Filling out guest information
+    # Filling out guest_test information
     sampleGuest[0].setFirstName('Bob')
     sampleGuest[1].setFirstName('Jerry')
     sampleGuest[2].setFirstName('Jessica')
@@ -82,7 +82,7 @@ def getSampleData():
     sampleRoom[2].setStatus('Occupied')
     sampleRoom[3].setStatus('Occupied')
 
-    # Filling out reservation information
+    # Filling out reservation_test information
     sampleReservation[0].setGuest(sampleGuest[0])
     sampleReservation[1].setGuest(sampleGuest[1])
     sampleReservation[2].setGuest(sampleGuest[2])
