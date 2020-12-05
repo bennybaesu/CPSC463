@@ -1,11 +1,6 @@
 from tkinter import *
 from tkinter import font as tkFont
-from tkinter import Label as lb
-from tkinter import Entry as entry
-from datetime import datetime, timedelta
-import reservation
-import guest
-import room
+import datetime
 
 import sample
 
@@ -22,96 +17,11 @@ def viewIdPhoto(fileName):
     canvas.create_image(20, 20, anchor=NW, image=img)
     top.mainloop()
 
-def onClick(args):
-    if args == 1:
-        name = input("Enter guest first name: ")
-        lastName = input("Enter guest last name: ")
-        checkin = input("Check in date: ")
-        checkout = input("Check out date: ")
-        roomType = input("Room Type: ")
-        roomNumber = input("Room Number: ")
-        totalCharge = input("Total Charge: ")
-        rate = input("Rate: ")
-        reservationSite = input("Reservation Site: ")
-
-        newRoom = room.Room()
-        newRoom.setRate(rate)
-        newRoom.setType(roomType)
-        newRoom.setRoomNumber(roomNumber)
-        newRoom.setRate(rate)
-
-        newGuest = guest.Guest()
-        newGuest.setFirstName(name)
-        newGuest.setLastName(lastName)
-
-        r = reservation.Reservation()
-        r.setGuest(newGuest)
-        r.setCheckIn(checkin)
-        r.setCheckOut(checkout)
-        r.setRoom(newRoom)
-        r.setReservationWebsite(reservationSite)
-        r.setTotalCharge(totalCharge)
-        reservationList.append(r)
-
-    if args == 2:
-        name = input("Enter Guest First Name to remove: ")
-        for r in reservationList:
-            if r.getGuest().getFirstName() == name:
-                reservationList.remove(r)
-
-
-def onReserveClick(btn):
-    text = btn.cget("text")
-    firstName = text.split()[0]
-
-    for r in reservationList:
-        if firstName == r.getGuest().getFirstName():
-            print("            GUEST INFORMATION\n-----------------------------------------")
-            print(firstName + " " + r.getGuest().getLastName())
-            print("Checkin: %s Checkout: %s" % (r.getCheckIn(), r.getCheckOut()))
-            print("%s Room #%s" % (r.getRoom().getType(), r.getRoom().getRoomNumber()))
-            print("Nightly Rate: $%s Total Charge: $%s" % (r.getRoom().getRate(), r.getTotalCharge()))
-            print("Booked at %s" % (r.getReservationWebsite()))
-
-            response = input(
-                "-----------------------------------------\nWould you like to make any changes? (y/n)\n-----------------------------------------\n")
-            while response == "y":
-                print("What would you like to change? ")
-                change = input(
-                    "(1) Check in\n(2) Checkout\n(3) Room Type\n(4) Room Number\n(5) Rate\n(6) Total Charge\n(7) Reservation Site\n")
-                if change == "1":
-                    checkIn = input("New Check In: ")
-                    r.setCheckIn(checkIn)
-                    response = input("Any other Changes? (y/n)")
-                elif change == "2":
-                    checkOut = input("New Check Out: ")
-                    r.setCheckOut(checkOut)
-                    response = input("Any other Changes? (y/n)")
-                elif change == "3":
-                    type = input("New Room Type: ")
-                    r.getRoom().setType(type)
-                    response = input("Any other Changes? (y/n)")
-                elif change == "4":
-                    number = input("New Room Number: ")
-                    r.getRoom().setRoomNumber(number)
-                    response = input("Any other Changes? (y/n)")
-                elif change == "5":
-                    rate = input("New Nightly Rate: ")
-                    r.getRoom().setRate(rate)
-                    response = input("Any other Changes? (y/n)")
-                elif change == "6":
-                    total = input("New Total Charge: ")
-                    r.setTotalCharge(total)
-                    response = input("Any other Changes? (y/n)")
-                elif change == "7":
-                    site = input("New Reservation Site: ")
-                    r.setReservationWebsite(site)
-                    response = input("Any other Changes? (y/n)")
-            if response == "n":
-                checkGuest = input("Check guest in? (y/n)")
-                if checkGuest == "y":
-                    cap6(r)
-            print("Please close window to save changes and return to main menu")
+def editInfo():
+    top = Toplevel()
+    canvas = Canvas(top, width=500, height=300)
+    canvas.pack()
+    top.mainloop()
 
 
 # Capability by Frank Mirando
@@ -128,7 +38,7 @@ def cap1():
     for y in range(len(roomList)):
         button_list.append(Button(text=' '))
 
-    # TODO if room that is clicked is available, lead to screen for cap6 so user can enter guest_test info. Changes to occupied
+    # TODO if room that is clicked is available, lead to screen for cap6 so user can enter guest info. Changes to occupied
     # TODO if room that is clicked is occupied, lead to screen for cap6 and user can mod any info
     # TODO if room is dirty, warns and asks user: yes -> change to available, no -> do nothing
     # TODO if room is in maintenance, warns and asks user: yes -> change to available, no -> do nothing
@@ -137,7 +47,7 @@ def cap1():
     def printMsg():
         print("Room clicked!")
 
-    # TODO pass in reservation_test object according to which room was clicked
+    # TODO pass in reservation object according to which room was clicked
     # TODO
     # For loop to print room buttons
     for f in range(len(roomList)):
@@ -164,9 +74,12 @@ def cap1():
     room_win.mainloop()
 
 
+
+
+
 # Capability by Frank Mirando
 def cap2():
-    # TODO get guest_test information on each room along with the days they are staying
+    # TODO get guest information on each room along with the days they are staying
     # Window settings
     week_win = Tk()
     week_win.title('Weekly Schedule')
@@ -195,10 +108,13 @@ def cap2():
     for c in range(len(roomList)):
         room_col.append(Button(text=' '))
 
-    # TODO get guest_test information on each room along with the days they are staying(if anything just hardcode for now)
+    # TODO get guest information on each room along with the days they are staying(if anything just hardcode for now)
     for r in range(len(roomList)):
         room_col[r] = Button(cap2_frame, text="Room " + str(roomList[r].getRoomNumber()), fg="BLACK", font=boldFont)
         room_col[r].grid(row=r + 1, column=0)
+
+
+
 
     # Hard coding names into columns for now for display purposes
     name1 = guestList[0].getFirstName() + ' ' + guestList[0].getLastName()
@@ -251,23 +167,14 @@ def cap3():
     b[1].grid(row=0, column=1)
     b[2] = Button(text="Check Out")
     b[2].grid(row=0, column=2)
-    b[3] = Button(text="Room Type")
+    b[3] = Button(text="Room Number")
     b[3].grid(row=0, column=3)
-    b[4] = Button(text="Room Number")
+    b[4] = Button(text="Total Charge")
     b[4].grid(row=0, column=4)
-    b[5] = Button(text="Total Charge")
+    b[5] = Button(text="Current Balance")
     b[5].grid(row=0, column=5)
-    b[6] = Button(text="Rate")
+    b[6] = Button(text="Reservation Site")
     b[6].grid(row=0, column=6)
-    b[7] = Button(text="Reservation Site")
-    b[7].grid(row=0, column=7)
-    b[8] = Button(text="Status")
-    b[8].grid(row=0, column=8)
-
-    b[9] = Button(command=lambda: onClick(1), text="Add Reservation")
-    b[9].grid(row=0, column=9)
-    b[10] = Button(command=lambda: onClick(2), text="Delete Reservation")
-    b[10].grid(row=1, column=9)
 
     count = 0
     rowNum = 1
@@ -275,7 +182,6 @@ def cap3():
         name = r.getGuest().getFirstName() + " " + r.getGuest().getLastName()
         b[count] = Button(text=name)
         b[count].grid(row=rowNum, column=0)
-        b[count].configure(command=lambda btn=b[count]: onReserveClick(btn))
 
         checkin = r.getCheckIn()
         b[count] = Button(text=checkin)
@@ -285,29 +191,21 @@ def cap3():
         b[count] = Button(text=checkout)
         b[count].grid(row=rowNum, column=2)
 
-        roomType = r.getRoom().getType()
-        b[count] = Button(text=roomType)
-        b[count].grid(row=rowNum, column=3)
-
         room = r.getRoom().getRoomNumber()
         b[count] = Button(text=room)
-        b[count].grid(row=rowNum, column=4)
+        b[count].grid(row=rowNum, column=3)
 
         totalCharge = r.getTotalCharge()
         b[count] = Button(text=totalCharge)
-        b[count].grid(row=rowNum, column=5)
+        b[count].grid(row=rowNum, column=4)
 
-        rate = r.getRoom().getRate()
-        b[count] = Button(text=rate)
-        b[count].grid(row=rowNum, column=6)
+        totalBalance = r.getBalance()
+        b[count] = Button(text=totalBalance)
+        b[count].grid(row=rowNum, column=5)
 
         site = r.getReservationWebsite()
         b[count] = Button(text=site)
-        b[count].grid(row=rowNum, column=7)
-
-        status = r.getRoom().getStatus()
-        b[count] = Button(text=status)
-        b[count].grid(row=rowNum, column=8)
+        b[count].grid(row=rowNum, column=6)
 
         count += 1
         rowNum += 1
@@ -354,72 +252,10 @@ def cap4():
         else:
             return "No"
 
-    def onRoomClick(btn):
-        print(btn.cget("text"))
-        room = btn.cget("text")
-
-        for r in housekeepingList:
-            if r.getRoom().getRoomNumber() == room:
-                print("--------------House Keeping Check List--------------")
-                print("input (y) or leave blank")
-                print("Room #%s: %s" % (r.getRoom().getRoomNumber(), r.getStatus()))
-                bath = input("Bathroom: ")
-                towels = input("Towels: ")
-                sheets = input("Bed Sheets: ")
-                vacuum = input("Vacuum: ")
-                dust = input("Dusting: ")
-                elec = input("Electronics: ")
-                checkedIn = input("Is guest checked in? ")
-
-                if bath == "y":
-                    r.setBathroom(True)
-                else:
-                    r.setBathroom(False)
-                if towels == "y":
-                    r.setTowels(True)
-                else:
-                    r.setTowels(False)
-                if sheets == "y":
-                    r.setBedSheets(True)
-                else:
-                    r.setBedSheets(False)
-                if vacuum == "y":
-                    r.setVacuum(True)
-                else:
-                    r.setVacuum(False)
-                if dust == "y":
-                    r.setDusting(True)
-                else:
-                    r.setDusting(False)
-                if elec == "y":
-                    r.setElectronics(True)
-                else:
-                    r.setElectronics(False)
-
-                for x in roomList:
-                    if x.getRoomNumber() == r.getRoom().getRoomNumber():
-                        if r.getBathroom() and r.getTowels() and r.getBedSheets() and r.getVacuum() and r.getDusting() and r.getElectronics():
-                            if checkedIn == "y":
-                                x.setStatus("Occupied")
-                            else:
-                                x.setStatus("Available")
-                        else:
-                            x.setStatus("Dirty")
-
-                        print("Room #%s: %s" % (r.getRoom().getRoomNumber(), x.getStatus()))
-
-                        changeStatus = input("Change room status? (y/n)")
-                        if changeStatus == "y":
-                            statusInput = input("What is the status of the room? ")
-                            x.setStatus(statusInput)
-
-                        print("Please Select another room or close the window to save and return to main menu")
-
     for r in housekeepingList:
         room = r.getRoomNumber()
         b[count] = Button(text=room)
         b[count].grid(row=rowNumb, column=0)
-        b[count].configure(command=lambda btn=b[count]: onRoomClick(btn))
         count += 1
 
         housekeeper = r.getHousekeepName()
@@ -462,83 +298,8 @@ def cap4():
 
 
 # Capability by Benjamin Baesu
-def cap5(guest_test):
+def cap5(guest):
     tk = Tk()
-
-    # Function to edit the values
-    def editInfo(attribute):
-        newW = Toplevel()
-
-        def quit():
-            newW.destroy()
-            newW.update()
-
-        def update(var):
-            reservationIndex = 0
-            guestIndex = 0
-
-            for c in range(0, len(guestList)):
-                if guest_test == guestList[c]:
-                    guestIndex = c
-            for j in range(0, len(reservationList)):
-                if guest_test == reservationList[j].getGuest():
-                    reservationIndex = j
-
-            if attribute == "First Name":
-                guest_test.setFirstName(var)
-                b[13]['text'] = var
-            elif attribute == "Last Name":
-                guest_test.setLastName(var)
-                b[14]['text'] = var
-            elif attribute == "Phone Number":
-                guest_test.setPhoneNumber(int(var))
-                b[15]['text'] = var
-            elif attribute == "Address":
-                guest_test.setAddress(var)
-                b[16]['text'] = var
-            elif attribute == "City":
-                guest_test.setCity(var)
-                b[17]['text'] = var
-            elif attribute == "State":
-                guest_test.setState(var)
-                b[18]['text'] = var
-            elif attribute == "Zip Code":
-                guest_test.setZip(int(var))
-                b[19]['text'] = var
-            elif attribute == "Email Address":
-                guest_test.setEmail(var)
-                b[20]['text'] = var
-            elif attribute == "ID State":
-                guest_test.setID(var, guest_test.getID()[1])
-                b[21]['text'] = var
-            elif attribute == "ID Number":
-                guest_test.setID(guest_test.getID()[0], var)
-                b[22]['text'] = var
-            elif attribute == "License Plate Number":
-                guest_test.setLicensePlate(var)
-                b[23]['text'] = var
-
-            guestList[guestIndex] = guest_test
-            reservationList[reservationIndex].setGuest(guest_test)
-
-            tk.update()
-
-            # Quit the pop-up window
-            newW.destroy()
-            newW.update()
-
-        txt = "Enter " + attribute
-
-        # Create text box:
-        lb(newW, text=txt).grid(row=0, column=0)
-        e1 = entry(newW)
-        e1.grid(row=0, column=1)
-
-        Button(newW, text='Cancel', command=quit).grid(row=3, column=0, pady=4)
-        Button(newW, text='Update', command=lambda: update(e1.get())).grid(row=3, column=1, pady=4)
-
-        print(e1.get())
-        newW.mainloop()
 
     # Font of bold Text
     boldFont = tkFont.Font(family='Helvetica', size=14, weight=tkFont.BOLD)
@@ -549,11 +310,11 @@ def cap5(guest_test):
 
     b = []
 
-    for i in range(26):
+    for i in range(25):
         b.append(Button(text=' '))
 
     # Print Column Titles:
-    b[0] = Button(tk, text='Fist Name', font=boldFont)
+    b[0] = Button(text='Fist Name', font=boldFont)
     b[0].grid(row=0, column=0)
 
     b[1] = Button(text='Last Name', font=boldFont)
@@ -589,164 +350,52 @@ def cap5(guest_test):
     b[12] = Button(text='ID Photo', font=boldFont)
     b[12].grid(row=0, column=11)
 
-    # Print the guest_test information
+    # Print the guest information
 
-    b[13] = Button(tk, text=guest_test.getFirstName(), command=lambda: editInfo("First Name"))
+    b[13] = Button(text=guest.getFirstName())
     b[13].grid(row=1, column=0)
 
-    b[14] = Button(tk, text=guest_test.getLastName(), command=lambda: editInfo("Last Name"))
+    b[14] = Button(text=guest.getLastName())
     b[14].grid(row=1, column=1)
 
-    b[15] = Button(tk, text=str(guest_test.getPhoneNumber()), command=lambda: editInfo("Phone Number"))
+    b[15] = Button(text=str(guest.getPhoneNumber()))
     b[15].grid(row=1, column=2)
 
-    b[16] = Button(tk, text=guest_test.getAddress(), command=lambda: editInfo("Address"))
+    b[16] = Button(text=guest.getAddress())
     b[16].grid(row=1, column=3)
 
-    b[17] = Button(tk, text=guest_test.getCity(), command=lambda: editInfo("City"))
+    b[17] = Button(text=guest.getCity())
     b[17].grid(row=1, column=4)
 
-    b[18] = Button(tk, text=guest_test.getState(), command=lambda: editInfo("State"))
+    b[18] = Button(text=guest.getState())
     b[18].grid(row=1, column=5)
 
-    b[19] = Button(tk, text=str(guest_test.getZip()), command=lambda: editInfo("Zip Code"))
+    b[19] = Button(text=str(guest.getZip()))
     b[19].grid(row=1, column=6)
 
-    b[20] = Button(tk, text=guest_test.getEmail(), command=lambda: editInfo("Email Address"))
+    b[20] = Button(text=guest.getEmail())
     b[20].grid(row=1, column=7)
 
-    temp = guest_test.getID()
+    temp = guest.getID()
 
-    b[21] = Button(tk, text=temp[0], command=lambda: editInfo("ID State"))
+    b[21] = Button(text=temp[0])
     b[21].grid(row=1, column=8)
 
-    b[22] = Button(tk, text=temp[1], command=lambda: editInfo("ID Number"))
+    b[22] = Button(text=temp[1])
     b[22].grid(row=1, column=9)
 
-    b[23] = Button(tk, text=guest_test.getLicensePlate(), command=lambda: editInfo("License Plate Number"))
+    b[23] = Button(text=guest.getLicensePlate(), command=lambda: editInfo())
     b[23].grid(row=1, column=10)
 
-    b[24] = Button(tk, text='Click to view ID', command=lambda: viewIdPhoto(guest_test.getIdPhoto()))
+    b[24] = Button(text='Click to view ID', command=lambda: viewIdPhoto(guest.getIdPhoto()))
     b[24].grid(row=1, column=11)
-
-    b[25] = Label(tk, text='Select attribute to edit')
-    b[25].grid(row=2, column=0)
 
     tk.mainloop()
 
 
 # Capability by Benjamin Baesu
-def cap6(reservation_test):
+def cap6(reservation):
     tk = Toplevel()
-
-    # Function to edit the values
-    def editInfo(attribute):
-        newW = Toplevel()
-
-        def quit_window():
-            newW.destroy()
-            newW.update()
-
-        def update(var):
-            reservationIndex = 0
-            guestIndex = 0
-            roomIndex = 0
-
-            for j in range(0, len(reservationList)):
-                if reservation_test == reservationList[j]:
-                    reservationIndex = j
-            for k in range(0, len(guestList)):
-                if guest_temp == guestList[k]:
-                    guestIndex = 0
-            for l in range(0, len(roomList)):
-                if room_temp == roomList[l]:
-                    roomIndex = 0
-
-            if attribute == "First Name":
-                guest_temp.setFirstName(var)
-                b[10]['text'] = var
-            elif attribute == "Last Name":
-                guest_temp.setLastName(var)
-                b[11]['text'] = var
-            elif attribute == "Room Number":
-                room_temp.setRoomNumber(int(var))
-                b[14]['text'] = var
-            elif attribute == "Room Type":
-                room_temp.setAddress(var)
-                b[15]['text'] = var
-            elif attribute == "Room Rate":
-                guest_temp.setCity(var)
-                b[16]['text'] = var
-            elif attribute == "Total Charge":
-                guest_temp.setState(var)
-                b[17]['text'] = var
-            elif attribute == "Payments Made":
-                guest_temp.setZip(int(var))
-                b[18]['text'] = var
-            elif attribute == "Balance":
-                guest_temp.setEmail(var)
-                b[19]['text'] = var
-
-            guestList[guestIndex] = guest_temp
-            reservationList[reservationIndex].setGuest(guest_temp)
-            reservationList[reservationIndex].setRoom(room_temp)
-            roomList[roomIndex] = room_temp
-
-            tk.update()
-
-            # Quit the pop-up window
-            newW.destroy()
-            newW.update()
-
-        attributeText = "Enter " + attribute
-
-        # Create text box:
-        lb(newW, text=attributeText).grid(row=0, column=0)
-        e1 = entry(newW)
-        e1.grid(row=0, column=1)
-
-        Button(newW, text='Cancel', command=quit_window).grid(row=3, column=0, pady=4)
-        Button(newW, text='Update', command=lambda: update(e1.get())).grid(row=3, column=1, pady=4)
-
-        print(e1.get())
-        newW.mainloop()
-
-    def upDate(var):
-        reservationIndex = 0
-        for j in range(0, len(reservationList)):
-            if reservation_test == reservationList[j]:
-                reservationIndex = j
-
-        if var == "checkin":
-            if reservation_test.getCheckIn() < reservation_test.getCheckOut():
-                x = reservation_test.getCheckIn() + timedelta(days=1)
-                reservation_test.setCheckIn(x)
-                b[12]['text'] = x
-        else:
-            x = reservation_test.getCheckOut() + timedelta(days=1)
-            reservation_test.setCheckOut(x)
-            b[13]['text'] = x
-
-        reservationList[reservationIndex] = reservation_test
-
-    def downDate(var):
-        reservationIndex = 0
-        for j in range(0, len(reservationList)):
-            if reservation_test == reservationList[j]:
-                reservationIndex = j
-
-        if var == "checkin":
-            if reservation_test.getCheckIn() >= datetime.today():
-                x = reservation_test.getCheckIn() - timedelta(days=1)
-                reservation_test.setCheckIn(x)
-                b[12]['text'] = x
-        else:
-            if reservation_test.getCheckOut() >= reservation_test.getCheckIn():
-                x = reservation_test.getCheckOut() - timedelta(days=1)
-                reservation_test.setCheckOut(x)
-                b[13]['text'] = x
-
-        reservationList[reservationIndex] = reservation_test
 
     # Font of bold Text
     boldFont = tkFont.Font(family='Helvetica', size=14, weight=tkFont.BOLD)
@@ -757,91 +406,72 @@ def cap6(reservation_test):
 
     b = []
 
-    for i in range(27):
+    for i in range(25):
         b.append(Button(text=' '))
 
     # Print Column Titles:
-    b[0] = Button(tk, text='First Name', font=boldFont)
+    b[0] = Button(tk, text='Name', font=boldFont)
     b[0].grid(row=0, column=0)
 
-    b[1] = Button(tk, text='Last Name', font=boldFont)
+    b[1] = Button(tk, text='Check In (yyyy-mm-dd)', font=boldFont)
     b[1].grid(row=0, column=1)
 
-    b[2] = Button(tk, text='Check In (yyyy-mm-dd)', font=boldFont)
-    b[2].grid(row=0, column=2)
-
     b[3] = Button(tk, text='Check Out (yyyy-mm-dd)', font=boldFont)
-    b[3].grid(row=0, column=3)
+    b[3].grid(row=0, column=2)
 
-    b[4] = Button(tk, text='Room Number', font=boldFont)
-    b[4].grid(row=0, column=4)
+    b[5] = Button(tk, text='Room Number', font=boldFont)
+    b[5].grid(row=0, column=3)
 
-    b[5] = Button(tk, text='Room Type', font=boldFont)
-    b[5].grid(row=0, column=5)
+    b[6] = Button(tk, text='Room Type', font=boldFont)
+    b[6].grid(row=0, column=4)
 
-    b[6] = Button(tk, text='Room Rate', font=boldFont)
-    b[6].grid(row=0, column=6)
+    b[7] = Button(tk, text='Room Rate', font=boldFont)
+    b[7].grid(row=0, column=5)
 
-    b[7] = Button(tk, text='Total Charge', font=boldFont)
-    b[7].grid(row=0, column=7)
+    b[8] = Button(tk, text='Total Charge', font=boldFont)
+    b[8].grid(row=0, column=6)
 
-    b[8] = Button(tk, text='Payments Made', font=boldFont)
-    b[8].grid(row=0, column=8)
+    b[9] = Button(tk, text='Payments Made', font=boldFont)
+    b[9].grid(row=0, column=7)
 
-    b[9] = Button(tk, text='Balance', font=boldFont)
-    b[9].grid(row=0, column=9)
+    b[11] = Button(tk, text='Balance', font=boldFont)
+    b[11].grid(row=0, column=8)
 
-    # Print the reservation_test information
-    guest_temp = reservation_test.getGuest()
-    room_temp = reservation_test.getRoom()
+    # Print the reservation information
+    guest = reservation.getGuest()
+    room = reservation.getRoom()
 
-    b[10] = Button(tk, text=guest_temp.getFirstName(), command=lambda: editInfo("First Name"))
-    b[10].grid(row=2, column=0)
+    name = guest.getLastName() + ', ' + guest.getFirstName()
+    b[13] = Button(tk, text=name)
+    b[13].grid(row=1, column=0)
 
-    b[11] = Button(tk, text=guest_temp.getLastName(), command=lambda: editInfo("Last Name"))
-    b[11].grid(row=2, column=1)
+    b[14] = Button(tk, text=reservation.getCheckIn())
+    b[14].grid(row=1, column=1)
 
-    b[20] = Button(tk, text="up", command=lambda: upDate("checkin"))
-    b[20].grid(row=1, column=2)
+    b[15] = Button(tk, text=reservation.getCheckOut())
+    b[15].grid(row=1, column=2)
 
-    checkin = reservation_test.getCheckIn()
-    b[12] = Button(tk, text=checkin)
-    b[12].grid(row=2, column=2)
+    b[16] = Button(tk, text=str(room.getRoomNumber()))
+    b[16].grid(row=1, column=3)
 
-    b[22] = Button(tk, text="down", command=lambda: downDate("checkin"))
-    b[22].grid(row=3, column=2)
+    b[17] = Button(tk, text=room.getType())
+    b[17].grid(row=1, column=4)
 
-    b[21] = Button(tk, text="up", command=lambda: upDate("checkout"))
-    b[21].grid(row=1, column=3)
+    txt = '$' + str(room.getRate()) + ' per day'
+    b[18] = Button(tk, text=txt)
+    b[18].grid(row=1, column=5)
 
-    checkout = reservation_test.getCheckOut()
-    b[13] = Button(tk, text=checkout)
-    b[13].grid(row=2, column=3)
+    txt = '$' + str(reservation.getTotalCharge())
+    b[19] = Button(tk, text=txt)
+    b[19].grid(row=1, column=6)
 
-    b[23] = Button(tk, text="down", command=lambda: downDate("checkout"))
-    b[23].grid(row=3, column=3)
+    txt = '$' + str(reservation.getPaymentsMade())
+    b[20] = Button(tk, text=txt)
+    b[20].grid(row=1, column=7)
 
-    b[14] = Button(tk, text=str(room_temp.getRoomNumber()), command=lambda: editInfo("Room Number"))
-    b[14].grid(row=2, column=4)
-
-    b[15] = Button(tk, text=room_temp.getType(), command=lambda: editInfo("Room Type"))
-    b[15].grid(row=2, column=5)
-
-    txt = '$' + str(room_temp.getRate()) + ' per day'
-    b[16] = Button(tk, text=txt, command=lambda: editInfo("Room Rate"))
-    b[16].grid(row=2, column=6)
-
-    txt = '$' + str(reservation_test.getTotalCharge())
-    b[17] = Button(tk, text=txt, command=lambda: editInfo("Total Charge"))
-    b[17].grid(row=2, column=7)
-
-    txt = '$' + str(reservation_test.getPaymentsMade())
-    b[18] = Button(tk, text=txt, command=lambda: editInfo("Payments Made"))
-    b[18].grid(row=2, column=8)
-
-    txt = '$' + str(reservation_test.getBalance())
-    b[19] = Button(tk, text=txt, command=lambda: editInfo("Balance"))
-    b[19].grid(row=2, column=9)
+    txt = '$' + str(reservation.getBalance())
+    b[21] = Button(tk, text=txt)
+    b[21].grid(row=1, column=8)
 
     tk.mainloop()
 
@@ -858,7 +488,7 @@ def cap7():
                    '(6) - Check In Date',
                    '(7) - Check Out Date']
 
-        print("Search for guest_test by:")
+        print("Search for guest by:")
         for o in options:
             print(o)
 
@@ -872,11 +502,13 @@ def cap7():
     searcher = ' '
     searchList = []
 
+
     if choice == 1:
         searcher = input("Enter first name you want to search by: ")
         for g in guestList:
             if g.getFirstName() == searcher:
                 searchList.append(g)
+
     elif choice == 2:
         searcher = input("Enter last name you want to search by: ")
         for g in guestList:
@@ -911,7 +543,7 @@ def cap7():
                 searchList.append(r.getGuest())
 
     if len(searchList) == 0:
-        print("No guest_test matching that search criteria exists.")
+        print("No guest matching that search criteria exists.")
     else:
         while True:
             print('List of guests matching search:')
@@ -920,7 +552,7 @@ def cap7():
                 name = '(' + str(count) + ') - ' + i.getFirstName() + ' ' + i.getLastName()
                 print(name)
 
-            choice = int(input("Enter the choice of which guest_test you would like to view: "))
+            choice = int(input("Enter the choice of which guest you would like to view: "))
             if 1 <= choice <= len(searchList):
                 break
             else:
@@ -930,6 +562,11 @@ def cap7():
 
 
 def cap8():
+
+    def quitWindow():
+        tk.destroy()
+
+
     listOfReservationsToday = []
     today = datetime.date(2000, 1, 1)  # Hardcoded date, for now
 
@@ -1005,4 +642,7 @@ def cap8():
     b[count] = Button(text=moneyMadeString)
     b[count].grid(row=row, column=1)
 
+    row += 1
+    b[count] = Button(text='Quit back to Main Menu', command=lambda: quitWindow().grid(row=row, column=1, pady=4))
+    b[count].grid(row=row, column=0)
     tk.mainloop()
