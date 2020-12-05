@@ -149,6 +149,27 @@ def cap1_button_click(room_num):
                 print("Room passed in: " + str(room_num))
                 break
 
+#Added by Frank Mirando
+def cap2_button_click(room_num):
+    #If room has someone currently checked in, call cap6
+    #If room has no one checked in but has a reservation for later, call cap6
+    #If room is empty with no reservation, call cap6 with empty fields for possible check in
+    #If room is empty and no reservation and for a future date, call cap3 to add new reservation
+    for res in reservationList:
+        room_temp = res.getRoom()                       #stores room object
+        if room_temp.getRoomNumber() == room_num:       #if room match is found
+            #format dates first
+            curr_date = datetime.today()
+            formatted_curr_date = curr_date.strftime("%m/%d/%y")
+            ci_time = res.getCheckIn()
+            formatted_ci = ci_time.strftime("%m/%d/%y")
+            if formatted_ci == formatted_curr_date:         #if check in == today's date
+                cap6(res)
+            elif formatted_ci != formatted_curr_date:       #if check in != today's date
+                cap6(res)
+            elif room_temp.getStatus() == 'Available':
+                cap3()
+
 
 # Capability by Frank Mirando
 def cap1():
@@ -206,33 +227,56 @@ def cap2():
     week_win.title('Weekly Schedule')
     week_win.geometry("900x600")
     cap2_frame = Frame(week_win)
-    cap2_frame.pack()
+    cap2_frame.grid()
 
     boldFont = tkFont.Font(family='Helvetica', size=14, weight=tkFont.BOLD)
 
     # Will show the next 7 days in (mm/dd/yyyy)
-    curr_date = datetime.datetime.today()  # Today's date
+    curr_date = datetime.today()  # Today's date
 
     # Initializing list for date buttons
     date_buttons = []
     for c in range(7):
         date_buttons.append(Button(text=' '))
 
+    #List for guest name buttons
+    name_buttons = []
+    for n in range(len(reservationList)):
+        name_buttons.append(Button(text=' '))
+
     # Displays the next 7 dates
     for d in range(7):
         date_buttons[d] = Button(cap2_frame, text=curr_date.strftime("%m/%d/%y"), fg="BLACK", font=boldFont)
         date_buttons[d].grid(row=0, column=d + 1)
-        curr_date = curr_date + datetime.timedelta(days=1)  # increments days
+        g = guest.Guest()
+        r = room.Room()
+
+        #Unfinished code
+        ''''
+        #Print names according to check in and check out
+        #format dates to mm-dd-yyyy first 
+        for res in reservationList:
+            if res.getCheckIn() >= curr_date >= res.getCheckOut():
+                g = guest.Guest()
+                r = room.Room()
+                #Create buttons here
+        '''''
+
+        curr_date = curr_date + timedelta(days=1)  # increments days
 
     room_col = []
     # Initialize empty list before loop
     for c in range(len(roomList)):
         room_col.append(Button(text=' '))
+    def printmsg():
+        print("Button clicked")
 
-    # TODO get guest_test information on each room along with the days they are staying(if anything just hardcode for now)
+    # Displays rooms on column on left side
     for r in range(len(roomList)):
-        room_col[r] = Button(cap2_frame, text="Room " + str(roomList[r].getRoomNumber()), fg="BLACK", font=boldFont)
+        room_col[r] = Button(cap2_frame, text="Room " + str(roomList[r].getRoomNumber()), fg="BLACK",
+                             command=lambda r=r: cap2_button_click(roomList[r].getRoomNumber()))
         room_col[r].grid(row=r + 1, column=0)
+
 
     # Hard coding names into columns for now for display purposes
     name1 = guestList[0].getFirstName() + ' ' + guestList[0].getLastName()
@@ -265,6 +309,7 @@ def cap2():
 
     guest4_co = Label(cap2_frame, text=name4, fg="BLUE")
     guest4_co.grid(row=4, column=7)
+
 
     week_win.mainloop()
 
