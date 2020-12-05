@@ -1,10 +1,10 @@
 # CPSC 463 | Software Testing
 
 ## GROUP MEMBERS:
-Benjamin Baesu - bbaesu@csu.fullerton.edu
-Jeremy Viray - jrviray1998@csu.fullerton.edu
-Frank Mirando - mirandofrank@csu.fullerton.edu
-Tristan Bui - tristanbui@csu.fullerton.edu
+- Benjamin Baesu - bbaesu@csu.fullerton.edu
+- Jeremy Viray - jrviray1998@csu.fullerton.edu
+- Frank Mirando - mirandofrank@csu.fullerton.edu
+- Tristan Bui - tristanbui@csu.fullerton.edu
 
 ## CAPABILITY AUTHORS:
 - Capability 1: Frank Mirando
