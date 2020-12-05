@@ -969,7 +969,7 @@ def cap8():
         tk.destroy()
 
     listOfReservationsToday = []
-    today = datetime.date(2000, 1, 1)  # Hardcoded date, for now
+    today = datetime.today()  # Hardcoded date, for now
 
     for r in reservationList:
         if r.getReservationDate() == today:
