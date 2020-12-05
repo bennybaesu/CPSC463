@@ -113,12 +113,45 @@ def onReserveClick(btn):
                     cap6(r)
             print("Please close window to save changes and return to main menu")
 
+#Added by Frank Mirando
+def cap1_button_click(room_num):
+    for res in reservationList:
+        room_temp = res.getRoom()                       #stores room object
+        if room_temp.getRoomNumber() == room_num:       #if room match is found
+
+            # Checks if the clicked room is Unavailable/Dirty
+            if room_temp.getStatus() == 'Unavailable/Dirty':
+                print("WARNING: Room " + str(room_num) + " is dirty. Would you like to change to available?")
+                user_resp_dirt = input("y/n?\n")
+                if user_resp_dirt == "y":
+                    room_temp.setStatus('Available')
+                    print("Room " + str(room_temp.getRoomNumber()) + " is now available.")
+                elif user_resp_dirt == "n":
+                    print("Room " + str(room_temp.getRoomNumber()) + " is still dirty.")
+                    break
+
+            # Checks if the clicked room is Unavailable/Maintenance
+            elif room_temp.getStatus() == 'Unavailable/Maintenance':
+                print("WARNING: Room " + str(room_num) + " is under maintenance. Would you like to change to available?")
+                user_resp_maint = input("y/n?\n")
+                if user_resp_maint == "y":
+                    room_temp.setStatus('Available')
+                    print("Room " + str(room_temp.getRoomNumber()) + " is now available.")
+                elif user_resp_maint == "n":
+                    print("Room " + str(room_temp.getRoomNumber()) + " is still under maintenance.")
+                    break
+            # If neither dirty or under maintenance, cap6 is displayed with guest info
+            else:
+                cap6(res)
+                print("Room passed in: " + str(room_num))
+                break
+
 
 # Capability by Frank Mirando
 def cap1():
     room_win = Tk()  # Creating a window object
     room_win.title('All Rooms')
-    room_win.geometry("500x500")
+    room_win.geometry("700x500")
 
     top_frame = Frame(room_win)
     top_frame.grid()
@@ -130,20 +163,18 @@ def cap1():
 
     # TODO if room that is clicked is available, lead to screen for cap6 so user can enter guest_test info. Changes to occupied
     # TODO if room that is clicked is occupied, lead to screen for cap6 and user can mod any info
-    # TODO if room is dirty, warns and asks user: yes -> change to available, no -> do nothing
-    # TODO if room is in maintenance, warns and asks user: yes -> change to available, no -> do nothing
 
     # Verification that a room button is clicked
     def printMsg():
         print("Room clicked!")
 
-    # TODO pass in reservation_test object according to which room was clicked
-    # TODO
+    res_iter = 0
     # For loop to print room buttons
     for f in range(len(roomList)):
         button_list[f] = Button(top_frame, text=roomList[f].printInfo(), fg="BLACK",
-                                command=lambda: cap6(reservationList[1]))
+                                command=lambda f=f: cap1_button_click(roomList[f].getRoomNumber()))
         button_list[f].grid(row=0, column=f)
+        roomList[f].getRoomNumber()
 
     # Separate loop to display different colored status
     status_labels = []
@@ -162,6 +193,7 @@ def cap1():
             status_labels[x].grid(row=1, column=x)
 
     room_win.mainloop()
+
 
 
 # Capability by Frank Mirando
@@ -931,7 +963,7 @@ def cap7():
 
 def cap8():
     listOfReservationsToday = []
-    today = datetime.date(2000, 1, 1)  # Hardcoded date, for now
+    today = datetime.today()  # Hardcoded date, for now
 
     for r in reservationList:
         if r.getReservationDate() == today:
@@ -1004,5 +1036,6 @@ def cap8():
     moneyMadeString = '$' + str(moneyMade)
     b[count] = Button(text=moneyMadeString)
     b[count].grid(row=row, column=1)
+
 
     tk.mainloop()
