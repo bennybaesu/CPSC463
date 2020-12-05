@@ -905,7 +905,7 @@ def cap7():
 
     searcher = ' '
     searchList = []
-
+    newList = []
     if choice == 1:
         searcher = input("Enter first name you want to search by: ")
         for g in guestList:
@@ -964,6 +964,10 @@ def cap7():
 
 
 def cap8():
+
+    def quitWindow():
+        tk.destroy()
+
     listOfReservationsToday = []
     today = datetime.date(2000, 1, 1)  # Hardcoded date, for now
 
@@ -1037,6 +1041,11 @@ def cap8():
 
     moneyMadeString = '$' + str(moneyMade)
     b[count] = Button(text=moneyMadeString)
+    b[count].grid(row=row, column=1)
+
+
+    row += 1
+    b[count] = Button(text = 'Quit back to Main Menu', command = lambda: quitWindow().grid(row=row, column=1, pady=4))
     b[count].grid(row=row, column=1)
 
     tk.mainloop()
