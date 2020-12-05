@@ -15,3 +15,6 @@ Tristan Bui - tristanbui@csu.fullerton.edu
 - Capability 6: Benjamin Baesu
 - Capability 7: Tristan Bui
 - Capability 8: Tristan Bui
+
+## DISCLAIMER:
+All data for reservations, rooms, guests, and housekeeping is currently coming from sample.py. Though changes are made to data during the program, data will not be saved until the next interation of the project. 
